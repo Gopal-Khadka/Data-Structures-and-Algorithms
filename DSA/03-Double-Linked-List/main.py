@@ -96,6 +96,14 @@ class DoublyLinkedList:
         return False
 
     def insert(self, index, value):
+        """
+        Inserts a new node with the given value at the specified index in the double linked list.
+        Parameters:
+        index (int): The position at which the new node should be inserted. Must be between 0 and the current length of the list.
+        value (Any): The value to be stored in the new node.
+        Returns:
+        bool: True if the insertion is successful, None if the index is out of bounds.
+        """
 
         if index < 0 or index > self.length:
             return None
@@ -118,6 +126,20 @@ class DoublyLinkedList:
         return True
 
     def remove(self, index):
+        """
+        Removes the node at the specified index from the double linked list.
+
+        Parameters:
+        index (int): The position of the node to be removed. Must be within the range [0, length-1].
+
+        Returns:
+        Node: The removed node if the index is valid, otherwise None.
+
+        Notes:
+        - If the index is 0, the first node is removed.
+        - If the index is length-1, the last node is removed.
+        - For other valid indices, the node at the specified index is removed and the list is updated accordingly.
+        """
         if index < 0 or index >= self.length:
             return None
 
