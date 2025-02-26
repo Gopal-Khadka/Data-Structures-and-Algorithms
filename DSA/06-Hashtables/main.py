@@ -1,9 +1,9 @@
 class HashTable:
     # Big-O Notation
-        # Hash method - O(1) 
-        # Setting item - O(1)
-        # Getting item - O(n) # worst-case scenario (all the items are in single index stored in list) which is not usually the case
-        # Getting item - O(1) # distribution of items is usually great
+    # Hash method - O(1)
+    # Setting item - O(1)
+    # Getting item - O(n) # worst-case scenario (all the items are in single index stored in list) which is not usually the case
+    # Getting item - O(1) # distribution of items is usually great
     def __init__(self, size=7):
         self.data_map = [None] * size
 
@@ -74,6 +74,33 @@ class HashTable:
         return keys
 
 
+# Question: Suppose you have 2 lists: [1,3,5] and [2,4,5]. Find if there is common item in both the lists.
+# Approach 1(bad): Use nested-for loops to compare the all the items of 1st list with all the items of 2nd list. Time complexity becomes: O(n^2)
+def item_in_common():
+    lst1 = [1, 3, 5]
+    lst2 = [2, 4, 5]
+
+    for i in lst1:
+        for j in lst2:
+            if i == j:
+                return True
+    return False
+
+
+# Approach 2: Using dictionary approach with O(2n) ==> O(n)
+def item_in_common_dict():
+    lst1 = [1, 3, 5]
+    lst2 = [2, 4, 5]
+
+    my_dict = {}
+    for i in lst1:
+        my_dict[i] = True
+    for j in lst2:
+        if j in my_dict:
+            return True
+    return False
+
+
 if __name__ == "__main__":
     hash_table = HashTable()
 
@@ -82,8 +109,9 @@ if __name__ == "__main__":
     hash_table.set_item("nuts", 700)
     hash_table.set_item("nail", 900)
 
-    print(hash_table.get_item("nuts"))
-    print(hash_table.get_item("lumber"))
+    # print(hash_table.get_item("nuts"))
+    # print(hash_table.get_item("lumber"))
 
-    hash_table.print_table()
-    print(hash_table.get_keys())
+    # hash_table.print_table()
+    # print(hash_table.get_keys())
+    print(item_in_common_dict())
