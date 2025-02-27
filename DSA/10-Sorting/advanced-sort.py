@@ -52,15 +52,9 @@ def merge(left: list, right: list) -> list:
             merged.append(right[right_index])
             right_index += 1
 
-    # If there are remaining elements in the left list, add them to the merged list
-    while left_index < len(left):
-        merged.append(left[left_index])
-        left_index += 1
-
-    # If there are remaining elements in the right list, add them to the merged list
-    while right_index < len(right):
-        merged.append(right[right_index])
-        right_index += 1
+    # If there are remaining elements in the any list, add them to the merged list
+    merged.extend(left[left_index:])
+    merged.extend(right[right_index:])
 
     return merged
 
