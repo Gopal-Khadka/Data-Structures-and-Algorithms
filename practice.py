@@ -35,46 +35,92 @@ class LinkedList:
         self.length += 1
         return True
 
-    def has_loop(self):
+    def remove_duplicates(self):
         """
-        Detects if there's a loop in a linked list using Floyd's Cycle-Finding Algorithm.
-        The algorithm uses two pointers, 'slow' and 'fast', moving at different speeds
-        through the linked list. The 'slow' pointer moves one step at a time while the
-        'fast' pointer moves two steps. If there's a loop, the pointers will eventually
-        meet.
-        Returns:
-            bool: True if a loop is detected, False otherwise
+        Remove duplicate nodes from a linked list.
+        This method removes duplicate nodes from the linked list by maintaining a set of
+        seen values. It traverses the list once, removing subsequent occurrences of values
+        that have already been encountered.
         Time Complexity: O(n) where n is the number of nodes in the linked list
-        Space Complexity: O(1) as only two pointers are used regardless of list size
+        Space Complexity: O(n) to store the set of unique values
         Example:
-            >>> linked_list = LinkedList()
-            >>> linked_list.append(1)
-            >>> linked_list.append(2)
-            >>> linked_list.append(3)
-            >>> # Create a loop by connecting last node to second node
-            >>> linked_list.tail.next = linked_list.head.next
-            >>> linked_list.has_loop()
-            True
+            Before: 1 -> 2 -> 2 -> 3 -> 1 -> 4
+            After:  1 -> 2 -> 3 -> 4
+        Note:
+            - The method modifies the original linked list
+            - The first occurrence of each value is kept
+            - The length of the list is updated accordingly
         """
 
-        slow = self.head
-        fast = self.head
+        values = set()
+        previous: Node = None
+        current = self.head
 
-        while fast is not None and fast.next is not None:
-            slow = slow.next
-            fast = fast.next.next
+        while current is not None:
+            if current.value in values:
+                previous.next = (
+                    current.next
+                )  # breaks the list chain(remove the element) if value already in the set
+                self.length -= 1
+            else:
+                values.add(current.value)
+                previous = current  # updates "previous" if values is added to set
 
-            if slow == fast:
-                return True
-        return False
+            current = current.next  # moves current to the next node
+
+    def remove_duplicates_again(self):
+        """
+        Remove duplicate nodes from a linked list without using additional data structures.
+        This method uses a nested loop approach where for each node, it checks all subsequent
+        nodes for duplicates and removes them.
+
+        Time Complexity: O(n^2) where n is the number of nodes in the linked list
+        Space Complexity: O(1) as no extra space is needed
+
+        Example:
+            Before: 1 -> 2 -> 4 -> 3 -> 4
+            After:  1 -> 2 -> 4 -> 3
+
+        Note:
+            - The method modifies the original linked list
+            - The first occurrence of each value is kept
+            - More computationally intensive than using a set, but uses no extra space
+            - The length of the list is updated accordingly
+        """
+        current = self.head  # iterates all items of the list
+        while current is not None:
+            runner = current  # starts from current to the last item
+            while runner.next is not None:
+                if runner.next.value == current.value:
+                    # breaks the chain of element if duplicate found
+                    runner.next = runner.next.next
+                    self.length -= 1
+                else:
+                    # moves the runner to the next element if no duplicate
+                    runner = runner.next
+            current = current.next
 
 
 arr = LinkedList(1)
 arr.append(2)
+arr.append(1)
 arr.append(3)
 arr.append(4)
-arr.append(5)
+
+arr.print_list()
+print("Using set: ")
+arr.remove_duplicates()
+arr.print_list()
 
 
-arr.tail.next = arr.head.next
-print(arr.has_loop())
+lst = LinkedList(1)
+lst.append(2)
+lst.append(4)
+lst.append(3)
+lst.append(4)
+
+
+lst.print_list()
+print("Using no extra DS: ")
+lst.remove_duplicates_again()
+lst.print_list()
