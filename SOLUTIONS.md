@@ -1,5 +1,19 @@
 # Practicing LeetCode Questions
 
+- [Practicing LeetCode Questions](#practicing-leetcode-questions)
+  - [List of Questions](#list-of-questions)
+    - [Linked Lists](#linked-lists)
+    - [Stacks](#stacks)
+    - [Queues](#queues)
+    - [Hash Tables (Dictionaries)](#hash-tables-dictionaries)
+    - [Sets](#sets)
+    - [Sorting Algorithms for Linked Lists](#sorting-algorithms-for-linked-lists)
+    - [Binary Search Trees (BST)](#binary-search-trees-bst)
+    - [List Manipulation](#list-manipulation)
+  - [Questions and Solutions](#questions-and-solutions)
+
+
+
 ## List of Questions
 
 ### Linked Lists
@@ -129,3 +143,44 @@
         return slow
 
    ```
+2. Write a method called has_loop that is part of the linked list class.
+
+   - The method should be able to detect if there is a cycle or loop present in the linked list.
+   - The method should utilize Floyd's cycle-finding algorithm, also known as the "tortoise and hare" algorithm, to determine the presence of a loop efficiently.
+  
+  ```python
+    def has_loop(self):
+        """
+        Detects if there's a loop in a linked list using Floyd's Cycle-Finding Algorithm.
+        The algorithm uses two pointers, 'slow' and 'fast', moving at different speeds 
+        through the linked list. The 'slow' pointer moves one step at a time while the 
+        'fast' pointer moves two steps. If there's a loop, the pointers will eventually 
+        meet.
+        Returns:
+            bool: True if a loop is detected, False otherwise
+        Time Complexity: O(n) where n is the number of nodes in the linked list
+        Space Complexity: O(1) as only two pointers are used regardless of list size
+        Example:
+            >>> linked_list = LinkedList()
+            >>> linked_list.append(1)
+            >>> linked_list.append(2)
+            >>> linked_list.append(3)
+            >>> # Create a loop by connecting last node to second node
+            >>> linked_list.tail.next = linked_list.head.next
+            >>> linked_list.has_loop()
+            True
+        """
+
+        slow = self.head
+        fast = self.head
+
+        while fast is not None and fast.next is not None:
+            slow = slow.next
+            fast = fast.next.next
+
+            if slow == fast:
+                return True
+        return False
+
+  ```
+

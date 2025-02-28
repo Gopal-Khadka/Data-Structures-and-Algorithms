@@ -1,7 +1,7 @@
 class Node:
     def __init__(self, value):
         self.value = value
-        self.next = None
+        self.next: Node = None
 
 
 class LinkedList:
@@ -35,32 +35,38 @@ class LinkedList:
         self.length += 1
         return True
 
-    def find_middle_node(self):
+    def has_loop(self):
         """
-        Finds the middle node in a linked list using the two-pointer (slow and fast) technique.
-        The function uses two pointers moving at different speeds:
-        - slow pointer moves one step at a time
-        - fast pointer moves two steps at a time
-        When the fast pointer reaches the end of the list, the slow pointer will be at the middle.
-        For odd number of nodes, returns the exact middle node.
-        For even number of nodes, returns the first of the two middle nodes.
-        Time Complexity: O(n) where n is the number of nodes
-        Space Complexity: O(1) as only two pointers are used
+        Detects if there's a loop in a linked list using Floyd's Cycle-Finding Algorithm.
+        The algorithm uses two pointers, 'slow' and 'fast', moving at different speeds
+        through the linked list. The 'slow' pointer moves one step at a time while the
+        'fast' pointer moves two steps. If there's a loop, the pointers will eventually
+        meet.
         Returns:
-            Node: The middle node of the linked list
-                  Returns None if list is empty
+            bool: True if a loop is detected, False otherwise
+        Time Complexity: O(n) where n is the number of nodes in the linked list
+        Space Complexity: O(1) as only two pointers are used regardless of list size
         Example:
-            For list: 1->2->3->4->5, returns node containing 3
-            For list: 1->2->3->4, returns node containing 2
+            >>> linked_list = LinkedList()
+            >>> linked_list.append(1)
+            >>> linked_list.append(2)
+            >>> linked_list.append(3)
+            >>> # Create a loop by connecting last node to second node
+            >>> linked_list.tail.next = linked_list.head.next
+            >>> linked_list.has_loop()
+            True
         """
 
         slow = self.head
         fast = self.head
+
         while fast is not None and fast.next is not None:
             slow = slow.next
             fast = fast.next.next
 
-        return slow
+            if slow == fast:
+                return True
+        return False
 
 
 arr = LinkedList(1)
@@ -68,4 +74,7 @@ arr.append(2)
 arr.append(3)
 arr.append(4)
 arr.append(5)
-print(arr.find_middle_node().value)
+
+
+arr.tail.next = arr.head.next
+print(arr.has_loop())
