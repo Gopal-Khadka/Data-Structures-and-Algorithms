@@ -234,38 +234,81 @@
 
       ```
      2. Without using a Set - This approach will have a time complexity of O(n^2), where n is the number of nodes in the linked list. You are not allowed to use any additional data structures for this implementation.
-    ```python
-    def remove_duplicates_again(self):
-        """
-        Remove duplicate nodes from a linked list without using additional data structures.
-        This method uses a nested loop approach where for each node, it checks all subsequent
-        nodes for duplicates and removes them.
+      ```python
+      def remove_duplicates_again(self):
+          """
+          Remove duplicate nodes from a linked list without using additional data structures.
+          This method uses a nested loop approach where for each node, it checks all subsequent
+          nodes for duplicates and removes them.
 
-        Time Complexity: O(n^2) where n is the number of nodes in the linked list
-        Space Complexity: O(1) as no extra space is needed
+          Time Complexity: O(n^2) where n is the number of nodes in the linked list
+          Space Complexity: O(1) as no extra space is needed
 
-        Example:
-            Before: 1 -> 2 -> 4 -> 3 -> 4
-            After:  1 -> 2 -> 4 -> 3
+          Example:
+              Before: 1 -> 2 -> 4 -> 3 -> 4
+              After:  1 -> 2 -> 4 -> 3
 
-        Note:
-            - The method modifies the original linked list
-            - The first occurrence of each value is kept
-            - More computationally intensive than using a set, but uses no extra space
-            - The length of the list is updated accordingly
-        """
-        current = self.head  # iterates all items of the list
-        while current is not None:
-            runner = current  # starts from current to the last item
-            while runner.next is not None:
-                if runner.next.value == current.value:
-                    # breaks the chain of element if duplicate found
-                    runner.next = runner.next.next
-                    self.length -= 1
-                else:
-                    # moves the runner to the next element if no duplicate
-                    runner = runner.next
-            current = current.next
+          Note:
+              - The method modifies the original linked list
+              - The first occurrence of each value is kept
+              - More computationally intensive than using a set, but uses no extra space
+              - The length of the list is updated accordingly
+          """
+          current = self.head  # iterates all items of the list
+          while current is not None:
+              runner = current  # starts from current to the last item
+              while runner.next is not None:
+                  if runner.next.value == current.value:
+                      # breaks the chain of element if duplicate found
+                      runner.next = runner.next.next
+                      self.length -= 1
+                  else:
+                      # moves the runner to the next element if no duplicate
+                      runner = runner.next
+              current = current.next
+      ```
 
+4. Find the item that is a certain number of steps away from the end of the linked list WITHOUT USING LENGTH.
+   ```python
+     def kth_node_from_end(self, k: int):
+           """
+           Find the kth node from the end of a linked list using the two-pointer technique.
+           This method uses two pointers (fast and slow) to find the kth node from the end
+           in a single traversal. The fast pointer moves k steps ahead first, then both
+           pointers move until fast reaches the end, making slow point to the kth node
+           from the end.
+           Args:
+               k (int): The position from the end to find (0-based indexing)
+           Returns:
+               Node: The kth node from the end of the linked list
+                     Returns None if k is greater than the length of the list
+           Examples:
+               >>> ll = LinkedList(1)
+               >>> ll.append(2)
+               >>> ll.append(3)
+               >>> ll.append(4)
+               >>> ll.append(5)
+               >>> ll.print_list()
+               1, 2, 3, 4, 5
+               >>> node = ll.kth_node_from_end(1)
+               >>> node.value
+               4
+           Time Complexity: O(n) where n is the length of the linked list
+           Space Complexity: O(1) as only two pointers are used
+           """
 
-    ```
+           fast = self.head
+           slow = self.head
+
+           for _ in range(k):
+               if fast is None:
+                   return None
+               fast = fast.next
+
+           while fast.next is not None:
+               slow = slow.next
+               fast = fast.next
+           return slow
+   ```
+
+5. 

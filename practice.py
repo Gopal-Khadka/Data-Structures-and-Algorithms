@@ -100,27 +100,53 @@ class LinkedList:
                     runner = runner.next
             current = current.next
 
+    def kth_node_from_end(self, k: int):
+        """
+        Find the kth node from the end of a linked list using the two-pointer technique.
+        This method uses two pointers (fast and slow) to find the kth node from the end
+        in a single traversal. The fast pointer moves k steps ahead first, then both
+        pointers move until fast reaches the end, making slow point to the kth node
+        from the end.
+        Args:
+            k (int): The position from the end to find (0-based indexing)
+        Returns:
+            Node: The kth node from the end of the linked list
+                  Returns None if k is greater than the length of the list
+        Examples:
+            >>> ll = LinkedList(1)
+            >>> ll.append(2)
+            >>> ll.append(3)
+            >>> ll.append(4)
+            >>> ll.append(5)
+            >>> ll.print_list()
+            1, 2, 3, 4, 5
+            >>> node = ll.kth_node_from_end(1)
+            >>> node.value
+            4
+        Time Complexity: O(n) where n is the length of the linked list
+        Space Complexity: O(1) as only two pointers are used
+        """
+
+        fast = self.head
+        slow = self.head
+
+        for _ in range(k):
+            if fast is None:
+                return None
+            fast = fast.next
+
+        while fast.next is not None:
+            slow = slow.next
+            fast = fast.next
+        return slow
+
 
 arr = LinkedList(1)
 arr.append(2)
-arr.append(1)
 arr.append(3)
 arr.append(4)
+arr.append(5)
 
 arr.print_list()
-print("Using set: ")
-arr.remove_duplicates()
-arr.print_list()
-
-
-lst = LinkedList(1)
-lst.append(2)
-lst.append(4)
-lst.append(3)
-lst.append(4)
-
-
-lst.print_list()
-print("Using no extra DS: ")
-lst.remove_duplicates_again()
-lst.print_list()
+k = 1
+print(f"{k}-th node from end: ", arr.kth_node_from_end(k).value)
