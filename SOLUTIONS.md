@@ -311,4 +311,66 @@
            return slow
    ```
 
-5. 
+5. You are given a singly linked list and two integers m and n. Your task is to write a method reverse_between within the LinkedList class that reverses the nodes of the linked list from index m to index n (inclusive) in one pass and in-place.
+  ```python
+  def reverse_btn(self, start: int, end: int):
+        """
+        Reverses a portion of the linked list between given positions `start` and `end` (inclusive).
+
+        This method performs an **in-place** reversal of nodes from position `start` to `end`.
+        The positions are **1-indexed**, meaning the first node is at position `1`.
+
+        Args:
+            start (int): The starting position of reversal (1-based index)
+            end (int): The ending position of reversal (1-based index)
+
+        Returns:
+            None. The linked list is modified in place.
+
+        Example:
+            Given the linked list: 1 -> 2 -> 3 -> 4 -> 5
+            Calling reverse_btn(start=2, end=4) results in: 1 -> 4 -> 3 -> 2 -> 5
+
+        Notes:
+            - If the list is empty (`self.head is None`) or if `start == end`, no modification is needed.
+            - A **dummy node** is used to handle edge cases where the reversal includes the head node.
+            - The reversal is performed in **one pass** with **O(n) time complexity**.
+            - The space complexity is **O(1)**, as the reversal is done in place.
+        """
+
+        # Edge case: If the list is empty or no reversal is needed
+        if not self.head or start == end:
+            return
+
+        # Step 1: Create a dummy node to simplify edge cases where `start = 1`
+        dummy = Node(0)  # Dummy node does not hold any real value
+        dummy.next = self.head  # Connect dummy node to the head
+        leftPre = dummy  # This will eventually point to the node before `start`
+
+        # Step 2: Move `leftPre` to the node **before** `start`
+        for _ in range(start - 1):
+            leftPre = leftPre.next  # Move forward
+
+        # Now `leftPre` is the (start-1)th node, and `current_node` is the `start`th node
+        current_node = leftPre.next
+        reverse_tail = current_node  # The `start`th node will become the tail of the reversed section
+
+        # Step 3: Reverse the sublist from `start` to `end`
+        prev = (
+            None  # `prev` will eventually become the new head of the reversed section
+        )
+        for _ in range(end - start + 1):
+            next = current_node.next  # Save the next node
+            current_node.next = prev  # Reverse the pointer
+            prev = current_node  # Move `prev` forward
+            current_node = next  # Move `current_node` forward
+
+        # Step 4: Connect the reversed portion back to the original list
+        leftPre.next = (
+            prev  # Connect the (start-1)th node to the new head of the reversed section
+        )
+        reverse_tail.next = current_node  # Connect the tail of the reversed section to the remaining list
+
+        # Step 5: Update `self.head` if `start == 1` (i.e., head was part of the reversed portion)
+        self.head = dummy.next
+  ```

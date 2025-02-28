@@ -140,13 +140,105 @@ class LinkedList:
             fast = fast.next
         return slow
 
+    def reverse_between(self, m: int, n: int):
+
+        # If the linked list is empty or m==n , then return None.
+        if not self.head or m == n:
+            return None
+
+        # create a dummy node and connect it to the head.
+        dummy = Node(0)
+        dummy.next = self.head
+        prev = dummy
+
+        # move prev to the node at position m.
+        for _ in range(m):
+            prev = prev.next
+
+        # set current to the next node of prev.
+        current = prev.next
+
+        # Reverse the linked list from position m to n.
+        for i in range(n - m):
+            temp = current.next
+            current.next = temp.next
+            temp.next = prev.next
+            prev.next = temp
+
+        # update the head of the linked list with the next node of the dummy.
+        self.head = dummy.next
+
+    def reverse_btn(self, start: int, end: int):
+        """
+        Reverses a portion of the linked list between given positions `start` and `end` (inclusive).
+
+        This method performs an **in-place** reversal of nodes from position `start` to `end`.
+        The positions are **1-indexed**, meaning the first node is at position `1`.
+
+        Args:
+            start (int): The starting position of reversal (1-based index)
+            end (int): The ending position of reversal (1-based index)
+
+        Returns:
+            None. The linked list is modified in place.
+
+        Example:
+            Given the linked list: 1 -> 2 -> 3 -> 4 -> 5
+            Calling reverse_btn(start=2, end=4) results in: 1 -> 4 -> 3 -> 2 -> 5
+
+        Notes:
+            - If the list is empty (`self.head is None`) or if `start == end`, no modification is needed.
+            - A **dummy node** is used to handle edge cases where the reversal includes the head node.
+            - The reversal is performed in **one pass** with **O(n) time complexity**.
+            - The space complexity is **O(1)**, as the reversal is done in place.
+        """
+
+        # Edge case: If the list is empty or no reversal is needed
+        if not self.head or start == end:
+            return
+
+        # Step 1: Create a dummy node to simplify edge cases where `start = 1`
+        dummy = Node(0)  # Dummy node does not hold any real value
+        dummy.next = self.head  # Connect dummy node to the head
+        leftPre = dummy  # This will eventually point to the node before `start`
+
+        # Step 2: Move `leftPre` to the node **before** `start`
+        for _ in range(start - 1):
+            leftPre = leftPre.next  # Move forward
+
+        # Now `leftPre` is the (start-1)th node, and `current_node` is the `start`th node
+        current_node = leftPre.next
+        reverse_tail = current_node  # The `start`th node will become the tail of the reversed section
+
+        # Step 3: Reverse the sublist from `start` to `end`
+        prev = (
+            None  # `prev` will eventually become the new head of the reversed section
+        )
+        for _ in range(end - start + 1):
+            next = current_node.next  # Save the next node
+            current_node.next = prev  # Reverse the pointer
+            prev = current_node  # Move `prev` forward
+            current_node = next  # Move `current_node` forward
+
+        # Step 4: Connect the reversed portion back to the original list
+        leftPre.next = (
+            prev  # Connect the (start-1)th node to the new head of the reversed section
+        )
+        reverse_tail.next = current_node  # Connect the tail of the reversed section to the remaining list
+
+        # Step 5: Update `self.head` if `start == 1` (i.e., head was part of the reversed portion)
+        self.head = dummy.next
+
 
 arr = LinkedList(1)
 arr.append(2)
 arr.append(3)
 arr.append(4)
 arr.append(5)
+arr.append(6)
 
 arr.print_list()
-k = 1
-print(f"{k}-th node from end: ", arr.kth_node_from_end(k).value)
+
+arr.reverse_btn(1, 6)
+
+arr.print_list()
