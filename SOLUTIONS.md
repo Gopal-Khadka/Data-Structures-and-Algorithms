@@ -374,3 +374,28 @@
         # Step 5: Update `self.head` if `start == 1` (i.e., head was part of the reversed portion)
         self.head = dummy.next
   ```
+
+6. Swap the values of the first and last node of LL. Note that the pointers to the nodes themselves are not swapped - only their values are exchanged.
+  ```python
+  def swap_first_last(self):
+        """
+        Swaps the values of the first and last nodes in a linked list.
+        The function performs an in-place swap of values between the head and tail nodes.
+        No nodes are actually moved - only their values are exchanged.
+        Returns:
+            None if list is empty or has only one node
+            Otherwise modifies the list in-place by swapping head and tail values
+        Example:
+            For list: 1 -> 2 -> 3 -> 4
+            After swap: 4 -> 2 -> 3 -> 1
+        Notes:
+            - Does not modify the list if it's empty or has only one node
+            - Maintains the same node references, only swaps values
+        """
+
+        if not self.head or self.head == self.tail:
+            return None
+        self.head.value, self.tail.value = self.tail.value, self.head.value
+
+  ```
+   
