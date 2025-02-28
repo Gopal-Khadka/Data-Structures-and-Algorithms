@@ -1,0 +1,4277 @@
+Instructions:
+Write a method to find and return the middle node in the Linked List WITHOUT using the length attribute.
+
+*** Solution Explanation ***
+def find_middle_node(self):
+        slow = self.head
+        fast = self.head
+        while fast is not None and fast.next is not None:
+            slow = slow.next
+            fast = fast.next.next
+        return slow
+
+
+
+
+This method uses two pointers, slow and fast, and advances them at different speeds through the list. The slow pointer moves one step at a time, while the fast pointer moves two steps at a time. By the time the fast pointer reaches the end of the list, the slow pointer will be at the middle node.
+
+
+
+
+
+Code with inline comments:
+
+
+
+def find_middle_node(self):
+    # Initialize two pointers to the head of the list
+    slow = self.head
+    fast = self.head
+    
+    # Traverse the list with the fast pointer moving twice
+    # as fast as the slow pointer
+    while fast is not None and fast.next is not None:
+        slow = slow.next  # Move slow pointer one step
+        fast = fast.next.next  # Move fast pointer two steps
+        
+    # When the fast pointer reaches the end, the slow
+    # pointer will be at the middle node
+    return slow
+    
+    
+    
+    
+Instructions:
+LL: Has Loop (⚡Interview Question)
+Write a method called has_loop that is part of the linked list class.
+
+The method should be able to detect if there is a cycle or loop present in the linked list.
+
+The method should utilize Floyd's cycle-finding algorithm, also known as the "tortoise and hare" algorithm, to determine the presence of a loop efficiently.
+
+The method should follow these guidelines:
+
+
+
+Create two pointers, slow and fast, both initially pointing to the head of the linked list.
+
+Traverse the list with the slow pointer moving one step at a time, while the fast pointer moves two steps at a time.
+
+If there is a loop in the list, the fast pointer will eventually meet the slow pointer. If this occurs, the method should return True.
+
+If the fast pointer reaches the end of the list or encounters a None value, it means there is no loop in the list. In this case, the method should return False.
+
+*** Solution Explanation ***
+ def has_loop(self):
+        slow = self.head
+        fast = self.head
+        while fast is not None and fast.next is not None:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                return True
+        return False
+
+
+
+
+In this code, the has_loop method uses two pointers to traverse the linked list: slow and fast. The slow pointer moves one step at a time, while the fast pointer moves two steps at a time. If there is a loop in the linked list, the slow and fast pointers will eventually meet, and the method will return True. If there is no loop in the linked list, the fast pointer will eventually reach the end of the list, and the method will return False.
+
+
+
+
+Instructions:
+LL: Remove Duplicates (⚡Interview Question)
+You are given a singly linked list that contains integer values, where some of these values may be duplicated.
+
+Your task is to implement a method called remove_duplicates() within the LinkedList class that removes all duplicate values from the list.
+
+Your method should not create a new list, but rather modify the existing list in-place, preserving the relative order of the nodes.
+
+You can implement the remove_duplicates() method in two different ways:
+
+
+
+Using a Set - This approach will have a time complexity of O(n), where n is the number of nodes in the linked list. You are allowed to use the provided Set data structure in your implementation.
+
+Without using a Set - This approach will have a time complexity of O(n^2), where n is the number of nodes in the linked list. You are not allowed to use any additional data structures for this implementation.
+
+
+
+Here is the method signature you need to implement:
+
+def remove_duplicates(self):
+
+
+Example:
+
+Input:
+
+LinkedList: 1 -> 2 -> 3 -> 1 -> 4 -> 2 -> 5
+
+Output:
+
+LinkedList: 1 -> 2 -> 3 -> 4 -> 5
+
+*** Solution Explanation ***
+For the optimal solution you will want to use a Set (you can read more about Sets here https://www.w3schools.com/python/python_sets.asp):
+
+I have also included an implementation that does not use a Set at the bottom of this explanation.
+
+Either solution will work but the one with Sets is O(n) while the other is O(n^2) time complexity.
+
+
+
+    def remove_duplicates(self):
+            values = set()
+            previous = None
+            current = self.head
+            while current:
+                if current.value in values:
+                    previous.next = current.next
+                    self.length -= 1
+                else:
+                    values.add(current.value)
+                    previous = current
+                current = current.next
+
+
+In this implementation, the linked list is iterated over using a while loop, with the current variable starting at the head of the linked list and the previous variable starting at None.
+
+If the current node's value is in the set of values, it's a duplicate, so the previous node's next attribute is set to the current node's next attribute. This effectively removes the duplicate node from the linked list. If the current node's value is not in the set, it's added to the set, and the previous variable is set to current.
+
+Finally, the current variable is set to the current node's next attribute, and the iteration continues until current is None.
+
+
+
+
+
+You can also do this without a Set but this will change the Big O from O(n) to O(n^2):
+
+A Set is a data structure that we will learn more about later in the course.
+
+Here is the solution without using a Set:
+
+
+
+    def remove_duplicates(self):
+        current = self.head
+        while current:
+            runner = current
+            while runner.next:
+                if runner.next.value == current.value:
+                    runner.next = runner.next.next
+                    self.length -= 1
+                else:
+                    runner = runner.next
+            current = current.next
+            
+            
+            
+            
+Instructions:
+LL: Find Kth Node From End (⚡Interview Question)
+Method name:
+find_kth_from_end
+
+Find the item that is a certain number of steps away from the end of the linked list WITHOUT USING LENGTH.
+
+For example, let's say you want to find the item that is 3 steps away from the end of the LL. To do this, you would start from the head of the LL and move through the links until you reach the item that is 3 steps away from the end.
+
+This is the problem of finding the "kth node from the end" of a linked list. Your task is to write a program that takes as input a linked list and a number k, and returns the item that is k steps away from the end of the list. If the linked list has fewer than k items, the program should return None.
+
+*** Solution Explanation ***
+def find_kth_from_end(ll, k):
+    slow = fast = ll.head   
+    for _ in range(k):
+        if fast is None:
+            return None
+        fast = fast.next
+ 
+    while fast:
+        slow = slow.next
+        fast = fast.next
+        
+    return slow
+
+
+The find_kth_from_end function takes two parameters: a linked list called ll, and an integer k representing the index of the element to find from the end of the list.
+
+The function initializes two pointers, slow and fast, to the head node of the linked list. The fast pointer is then moved k nodes ahead of the slow pointer. If the fast pointer reaches the end of the linked list before it moves k nodes, that means the linked list is too short to find the kth node from the end of the list, so the function returns None.
+
+Otherwise, the slow and fast pointers are moved one node at a time until the fast pointer reaches the end of the linked list. The slow pointer will then be pointing at the kth node from the end of the linked list, so the function returns that node.
+
+This function has a time complexity of O(n) where n is the length of the linked list.
+
+
+
+Code with inline comments:
+
+
+
+def find_kth_from_end(ll, k):
+    # Initialize both slow and fast pointers to 
+    # the head node of the linked list
+    slow = fast = ll.head   
+    
+    # Move the fast pointer k nodes ahead of the slow pointer
+    # If fast pointer reaches the end (None) before k nodes, 
+    # the linked list is too short and kth node doesn't exist
+    for _ in range(k):
+        if fast is None:
+            return None
+        fast = fast.next
+ 
+    # Move both pointers one node at a time until the fast 
+    # pointer reaches the end of the linked list (None).
+    # The slow pointer will now be pointing at the kth node 
+    # from the end of the linked list.
+    while fast:
+        slow = slow.next
+        fast = fast.next
+        
+    # Return the kth node from the end of the linked list
+    return slow
+    
+    
+    
+ 
+ Instructions:
+LL: Reverse Between (⚡Interview Question)
+You are given a singly linked list and two integers m and n. Your task is to write a method reverse_between within the LinkedList class that reverses the nodes of the linked list from index m to index n (inclusive) in one pass and in-place.
+
+Input
+
+The method reverse_between takes two integer inputs m and n.
+
+The method will only be passed valid indexes (you do not need to test whether the indexes are out of bounds)
+
+
+
+Output
+
+The method should modify the linked list in-place by reversing the nodes from index m to index n.
+
+If the linked list is empty or has only one node, the method should return None.
+
+
+
+
+
+Instructions:
+LL: Partition List (⚡Interview Question)
+You are given a singly linked list implementation in Python that does not have a tail pointer (which will make this method simpler to implement).
+
+You are tasked with implementing a method partition_list(self, x) that will take an integer x and partition the linked list such that all nodes with values less than x come before nodes with values greater than or equal to x. You should preserve the original relative order of the nodes in each of the two partitions.
+
+You need to implement this method as a method of the LinkedList class. The method should take an integer x as input. If the linked list is empty, the method should return None.
+
+To implement this method, you should create two new linked lists. These two linked lists will be made up of the original nodes from the linked list that is being partitioned, one for nodes less than x and one for nodes greater than or equal to x.  None of the nodes from the linked list should be duplicated.
+
+The creation of a limited number of new nodes is allowed (e.g., dummy nodes to facilitate the partitioning process).
+
+You should then traverse the original linked list and append each node to the appropriate new linked list.
+
+Finally, you should connect the two new linked lists together.
+
+*** Solution Explanation ***
+def partition_list(self, x):
+        if not self.head:
+            return None
+        
+        dummy1 = Node(0)
+        dummy2 = Node(0)
+        prev1 = dummy1
+        prev2 = dummy2
+        current = self.head
+        
+        while current:
+            if current.value < x:
+                prev1.next = current
+                prev1 = current
+            else:
+                prev2.next = current
+                prev2 = current
+            current = current.next
+        
+        prev2.next = None
+        prev1.next = dummy2.next
+        
+        self.head = dummy1.next
+
+
+
+
+The partition_list method takes in a value x and partitions the linked list such that all nodes with values less than x come before nodes with values greater than or equal to x.
+
+The method creates two dummy nodes, dummy1 and dummy2, which will be used to hold the two partitions. The prev1 and prev2 variables are used to keep track of the last node of each partition, initially pointing to their respective dummy nodes. The current variable starts at the head of the original list.
+
+The method then iterates through the original list using a while loop. For each node in the list, the method checks if its value is less than x. If it is, the node is added to the first partition by setting prev1.next to the current node and updating prev1 to point to the current node.
+
+If the node's value is greater than or equal to x, it is added to the second partition in a similar way, by setting prev2.next to the current node and updating prev2 to point to the current node.
+
+Once all nodes have been processed, the method sets prev2.next to None to ensure that the second partition ends with a null pointer. It then sets prev1.next to dummy2.next, which connects the end of the first partition to the beginning of the second partition.
+
+Finally, the method sets the head of the linked list to dummy1.next, which is the first node of the first partition (excluding the dummy node).
+
+
+
+
+
+Code with inline comments:
+
+
+
+# This function partitions a linked list based on a given value x
+def partition_list(self, x):
+    
+    # If linked list is empty, return None
+    if not self.head:
+        return None
+    
+    # Create two dummy nodes to be used as placeholders
+    # One will hold values less than x and the other will hold values greater
+    # than or equal to x
+    dummy1 = Node(0)
+    dummy2 = Node(0)
+    prev1 = dummy1
+    prev2 = dummy2
+    
+    # Start with the head node of the linked list
+    current = self.head
+    
+    # Traverse through the linked list and move each node to either
+    # dummy1 or dummy2 depending on its value compared to x
+    while current:
+        if current.value < x:
+            prev1.next = current
+            prev1 = current
+        else:
+            prev2.next = current
+            prev2 = current
+        current = current.next
+    
+    # Terminate dummy2 list with None
+    prev2.next = None
+    
+    # Combine the two partitioned linked lists by pointing the last node
+    # in the dummy1 list to the first node in the dummy2 list
+    prev1.next = dummy2.next
+    
+    # Set the head of the linked list to the first node in dummy1
+    self.head = dummy1.next
+
+Example
+
+Suppose the linked list is 1 -> 2 -> 3 -> 4 -> 5, and m = 2 and n = 4. Then, the method should modify the linked list to 1 -> 2 -> 5 -> 4 -> 3 .
+
+
+
+Constraints
+
+The algorithm should run in one pass and in-place, with a time complexity of O(n) and a space complexity of O(1).
+
+*** Solution Explanation ***
+def reverse_between(self, m, n):
+        if not self.head:
+            return None
+ 
+        dummy = Node(0)
+        dummy.next = self.head
+        prev = dummy
+ 
+        for i in range(m):
+            prev = prev.next
+ 
+        current = prev.next
+        for i in range(n - m):
+            temp = current.next
+            current.next = temp.next
+            temp.next = prev.next
+            prev.next = temp
+ 
+        self.head = dummy.next
+
+
+
+
+The reverse_between method in a LinkedList class takes two integer inputs m and n and reverses the linked list between the nodes located at positions m and n, inclusive.
+
+If the linked list is empty, the method returns None.
+
+The method first creates a dummy node with value 0 and sets its next attribute to the head of the linked list. Then, it sets prev to the dummy node and iterates prev m times.
+
+At this point, prev points to the node that precedes the m-th node.
+
+Next, the method sets current to the m-th node and iterates through the linked list n-m times.
+
+In each iteration, the method swaps the next pointers of current and its next node, thereby reversing the order of the nodes between positions m and n.
+
+The method uses a temporary variable temp to store the next node of current, which is needed to perform the swap.
+
+Finally, the method updates the head of the linked list to the next node of the dummy node.
+
+
+
+
+
+Code with inline comments:
+
+
+
+# A method to reverse a linked list from node m to node n inclusive.
+# If the linked list is empty, then return None.
+def reverse_between(self, m, n):
+    
+    # If the linked list is empty, then return None.
+    if not self.head:
+        return None
+ 
+    # create a dummy node and connect it to the head.
+    dummy = Node(0)
+    dummy.next = self.head
+    prev = dummy
+ 
+    # move prev to the node at position m.
+    for i in range(m):
+        prev = prev.next
+ 
+    # set current to the next node of prev.
+    current = prev.next
+    
+    # Reverse the linked list from position m to n.
+    for i in range(n - m):
+        temp = current.next
+        current.next = temp.next
+        temp.next = prev.next
+        prev.next = temp
+ 
+    # update the head of the linked list with the next node of the dummy.
+    self.head = dummy.next
+    
+    
+    
+ Instructions:
+DLL: Swap First and Last (⚡Interview Question)
+Swap the values of the first and last node
+
+Method name:
+swap_first_last
+
+Note that the pointers to the nodes themselves are not swapped - only their values are exchanged.
+
+*** Solution Explanation ***
+def swap_first_last(self):
+        if self.head is None or self.head == self.tail:
+            return
+        self.head.value, self.tail.value = self.tail.value, self.head.value
+
+
+
+
+The method swaps the values of the first and last nodes of a linked list.
+
+The first if statement checks if the linked list is empty or has only one node. If either of these conditions is true, then the method returns without doing anything.
+
+If the linked list has at least two nodes, then the method swaps the values of the first and last nodes using a tuple assignment. The tuple (self.tail.value, self.head.value) represents the values of the last and first nodes, respectively. The values are swapped by setting the tuple to (self.head.value, self.tail.value).
+
+After the values are swapped, the method exits. Note that the pointers to the nodes themselves are not swapped - only their values are exchanged.
+
+
+
+
+
+Code with inline comments:
+
+
+
+def swap_first_last(self):
+    # Check if the list is empty or has only one node
+    if self.head is None or self.head == self.tail:
+        return
+    # Swap the values of the head and tail nodes
+    self.head.value, self.tail.value = self.tail.value, self.head.value
+    
+    
+ Instructions:
+DLL: Reverse (⚡Interview Question)
+Create a new method called reverse that reverses the order of the nodes in the list, i.e., the first node becomes the last node, the second node becomes the second-to-last node, and so on.
+
+To do this, you'll need to traverse the list and change the direction of the pointers between the nodes so that they point in the opposite direction. Once you've done this for all nodes, you'll also need to update the head and tail pointers to reflect the new order of the nodes.
+
+*** Solution Explanation ***
+ def reverse(self):
+        temp = self.head
+        while temp is not None:
+            # swap the prev and next pointers of node points to
+            temp.prev, temp.next = temp.next, temp.prev
+            
+            # move to the next node
+            temp = temp.prev
+            
+        # swap the head and tail pointers
+        self.head, self.tail = self.tail, self.head
+
+
+This code is for reversing a doubly linked list by swapping the prev and next pointers of each node.
+
+The method starts by creating a variable temp and setting it to the head of the list. We use this variable to traverse the list and perform the swap operation on each node.
+
+Inside the while loop, we swap the prev and next pointers of the current node by using Python's tuple packing and unpacking syntax. We assign the value of temp.next to temp.prev and the value of temp.prev to temp.next, effectively swapping the two pointers.
+
+We then update the value of temp to be the previous node (which is now the next node in the original list). We do this by setting temp to temp.prev.
+
+We repeat this process until we have traversed the entire list (i.e., temp is None), at which point we have effectively reversed the list.
+
+Finally, we swap the head and tail pointers of the list by using tuple packing and unpacking. We assign the value of self.tail to self.head and the value of self.head to self.tail, effectively reversing the order of the pointers at the beginning and end of the list.
+
+
+
+
+Instructions:
+DLL: Palindrome Checker (⚡Interview Question)
+Write a method to determine whether a given doubly linked list reads the same forwards and backwards.
+
+For example, if the list contains the values [1, 2, 3, 2, 1], then the method should return True, since the list is a palindrome.
+
+If the list contains the values [1, 2, 3, 4, 5], then the method should return False, since the list is not a palindrome.
+
+Method name:
+is_palindrome
+
+*** Solution Explanation ***
+def is_palindrome(self):
+        if self.length <= 1:
+            return True
+        forward_node = self.head
+        backward_node = self.tail
+        for i in range(self.length // 2):
+            if forward_node.value != backward_node.value:
+                return False
+            forward_node = forward_node.next
+            backward_node = backward_node.prev
+        return True
+
+
+The is_palindrome method in a doubly linked list checks whether the list is a palindrome, meaning that it reads the same forwards and backwards.
+
+Here's how the method works:
+
+If the length of the list is less than or equal to 1, then the list is a palindrome by definition, so the method returns True.
+
+The method initializes two pointers, forward_node and backward_node, that point to the head and tail of the list, respectively. The method then iterates over half of the list, comparing the values of the nodes at each end of the list to see if they are the same.
+
+If the values of the nodes do not match, the method returns False, indicating that the list is not a palindrome. If all of the values match, the method returns True, indicating that the list is a palindrome.
+
+
+This implementation of the method takes advantage of the fact that a doubly linked list allows for efficient traversal from both ends of the list, which makes it possible to check if the list is a palindrome in O(n) time, where n is the length of the list.
+
+
+
+Code with inline comments:
+
+
+
+def is_palindrome(self):
+    # If the length of the list is 0 or 1, it is always a palindrome
+    if self.length <= 1:
+        return True
+    
+    # Create two pointers, one starting from the head and the other from the tail
+    forward_node = self.head
+    backward_node = self.tail
+    
+    # Iterate over half of the list
+    for i in range(self.length // 2):
+        # If the values at the two ends of the list do not match, the list is not a palindrome
+        if forward_node.value != backward_node.value:
+            return False
+        
+        # Move the two pointers towards each other
+        forward_node = forward_node.next
+        backward_node = backward_node.prev
+    
+    # If all values matched, the list is a palindrome
+    return True
+    
+    
+    
+ Instructions:
+DLL: Swap Nodes in Pairs (⚡Interview Question)
+You are given a doubly linked list.
+
+Implement a method called swap_pairs within the class that swaps the values of adjacent nodes in the linked list. The method should not take any input parameters.
+
+Note: This DoublyLinkedList does not have a tail pointer which will make the implementation easier.
+
+Example:
+
+1-->2-->3-->4--> should become 2-->1-->4-->3-->
+
+Your implementation should handle edge cases such as an empty linked list or a linked list with only one node.
+
+Note: You must solve the problem without modifying the values in the list's nodes (i.e., only the nodes' prev and next pointers may be changed.)
+
+*** Solution Explanation ***
+def swap_pairs(self):
+        dummy = Node(0)
+        dummy.next = self.head
+        prev = dummy
+ 
+        while self.head and self.head.next:
+            first_node = self.head
+            second_node = self.head.next
+ 
+            prev.next = second_node
+            first_node.next = second_node.next
+            second_node.next = first_node
+ 
+            second_node.prev = prev
+            first_node.prev = second_node
+            if first_node.next:
+                first_node.next.prev = first_node
+ 
+            self.head = first_node.next
+            prev = first_node
+ 
+        self.head = dummy.next
+
+
+
+
+This code defines a swap_pairs method that swaps adjacent pairs of nodes in a doubly-linked list. The method iterates through the list and swaps each adjacent pair of nodes by updating their next and prev pointers. Here's a step-by-step explanation:
+
+
+
+Create a dummy node with value 0. This dummy node is a placeholder and is used to simplify the head pointer manipulation.
+
+Set the next pointer of the dummy node to the current head of the list.
+
+Create a prev variable to keep track of the previous node, initially set to the dummy node.
+
+Start a while loop that continues as long as the current head and its next node are not None (i.e., there's a pair to swap).
+
+a. Assign first_node to the current head and second_node to the next node in the list. These are the two nodes that will be swapped.
+
+b. Update the next pointer of the prev node to point to the second node, effectively placing the second node before the first node in the list.
+
+c. Update the next pointer of the first node to point to the node after the second node, maintaining the correct order after the swap.
+
+d. Update the next pointer of the second node to point to the first node, completing the swap.
+
+e. Update the prev pointers of the swapped nodes to maintain the doubly-linked list structure. Set the prev pointer of the second node to the previous node (before the first node), and the prev pointer of the first node to the second node.
+
+f. If there's a node after the first node (i.e., first_node.next is not None), update its prev pointer to point back to the first node, maintaining the doubly-linked list structure.
+
+g. Move the head pointer to the next pair by setting it to the next node of the first node (which is now the second node in the next pair).
+
+h. Update the prev variable to the first node (which was just swapped), so it's ready for the next iteration.
+
+After the loop, update the head of the list to the next pointer of the dummy node. Since the dummy node was used to simplify head pointer manipulation, the actual head of the list is now the next node after the dummy node.
+
+
+
+
+
+Code with inline comments:
+
+
+
+def swap_pairs(self):
+    # Create dummy node as a placeholder
+    dummy = Node(0)
+    # Connect dummy node to head
+    dummy.next = self.head
+    # Set prev as the dummy node
+    prev = dummy
+ 
+    # Iterate through the list while a pair exists
+    while self.head and self.head.next:
+        # Assign first and second nodes of the pair
+        first_node = self.head
+        second_node = self.head.next
+ 
+        # Swap the pair by updating pointers
+        prev.next = second_node
+        first_node.next = second_node.next
+        second_node.next = first_node
+ 
+        # Update prev pointers for swapped nodes
+        second_node.prev = prev
+        first_node.prev = second_node
+        # Update prev pointer of the next node
+        if first_node.next:
+            first_node.next.prev = first_node
+ 
+        # Move head to the next pair
+        self.head = first_node.next
+        # Update prev to the last node in the pair
+        prev = first_node
+ 
+    # Update the head to the new start
+    self.head = dummy.next
+    
+    
+    
+    
+ Instructions:
+Stack: Implement Stack Using a List (⚡Interview Question)
+In the Stack: Intro video we discussed how stacks are commonly implemented using a list instead of a linked list.
+
+Create a constructor for Class Stack that implements a new stack with an empty list.
+
+*** Solution Explanation ***
+class Stack:
+    # WRITE CONSTRUCTOR THAT IMPLEMENTS STACK WITH EMPTY LIST #
+    #                                                         #
+    #                                                         #
+    #                                                         #
+    #                                                         #
+    ###########################################################
+def __init__(self):
+        self.stack_list = []
+        
+        
+Instructions:
+Stack: Push for Stack That Uses List (⚡Interview Question)
+Add a method to push a value onto the Stack implementation that we began in the last Coding Exercise.
+
+Remember: This Stack implementation uses a list instead of a linked list.
+
+*** Solution Explanation ***
+class Stack:
+    def __init__(self):
+        self.stack_list = []
+        
+    def print_stack(self):
+        for i in range(len(self.stack_list)-1, -1, -1):
+            print(self.stack_list[i])
+
+
+    # WRITE PUSH METHOD HERE #
+    #                        #
+    #                        #
+    #                        #
+    ##########################
+    
+
+
+
+my_stack = Stack()
+my_stack.push(1)
+my_stack.push(2)
+my_stack.push(3)
+
+my_stack.print_stack()
+
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    3 
+    2
+    1
+ 
+"""
+
+
+
+
+Instructions:
+Stack: Pop for Stack That Uses List (⚡Interview Question)
+Add a method to pop a value from the Stack implementation that we began in the last two Coding Exercises.
+
+Remember: This Stack implementation uses a list instead of a linked list.
+
+*** Solution Explanation ***
+class Stack:
+    def __init__(self):
+        self.stack_list = []
+
+    def print_stack(self):
+        for i in range(len(self.stack_list)-1, -1, -1):
+            print(self.stack_list[i])
+
+    def is_empty(self):
+        return len(self.stack_list) == 0
+
+    def peek(self):
+        if self.is_empty():
+            return None
+        else:
+            return self.stack_list[-1]
+
+    def size(self):
+        return len(self.stack_list)
+
+    def push(self, value):
+        self.stack_list.append(value)
+
+    # WRITE POP METHOD HERE #
+    #                       #
+    #                       #
+    #                       #
+    #########################
+ 
+            
+            
+            
+my_stack = Stack()
+my_stack.push(1)
+my_stack.push(2)
+my_stack.push(3)
+
+print("Stack before pop():")
+my_stack.print_stack()
+
+print("\nPopped node:")
+print(my_stack.pop())
+
+print("\nStack after pop():")
+my_stack.print_stack()
+
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    Stack before pop():
+    3
+    2
+    1
+    
+    Popped node:
+    3
+    
+    Stack after pop():
+    2
+    1
+ 
+"""
+
+
+
+Instructions:
+Stack: Parentheses Balanced (⚡Interview Question)
+Check to see if a string of parentheses is balanced or not.
+
+By "balanced," we mean that for every open parenthesis, there is a matching closing parenthesis in the correct order. For example, the string "((()))" has three pairs of balanced parentheses, so it is a balanced string. On the other hand, the string "(()))" has an imbalance, as the last two parentheses do not match, so it is not balanced.  Also, the string ")(" is not balanced because the close parenthesis needs to follow the open parenthesis.
+
+Your program should take a string of parentheses as input and return True if it is balanced, or False if it is not. In order to solve this problem, use a Stack data structure.
+
+Function name:
+is_balanced_parentheses
+
+Remember: this is not a method within the Stack class, this is a separate function.
+
+
+*** Solution Explanation ***
+def is_balanced_parentheses(parentheses):
+    stack = Stack()
+    for p in parentheses:
+        if p == '(':
+            stack.push(p)
+        elif p == ')':
+            if stack.is_empty() or stack.pop() != '(':
+                return False
+    return stack.is_empty()
+
+
+The function creates a new stack using the Stack() class, and then iterates through each character in the input string using a for loop.
+
+For each character, the function checks if it is an opening parenthesis, represented by the ( character. If it is an opening parenthesis, the function pushes it onto the stack using the push method of the stack.
+
+If the character is a closing parenthesis, represented by the ) character, the function checks if the stack is empty or if the top of the stack, which is the most recent opening parenthesis that has not been closed, is not an opening parenthesis. If either of these conditions is true, the function returns False because the parentheses are not balanced.
+
+If the top of the stack is an opening parenthesis, the function pops it from the stack using the pop method of the stack. The function continues iterating through the input string until all characters have been processed.
+
+After processing all the characters, the function returns True if the stack is empty, which indicates that all opening parentheses have been matched with a closing parenthesis, and False otherwise.
+
+*** Code ***
+class Stack:
+    def __init__(self):
+        self.stack_list = []
+
+    def print_stack(self):
+        for i in range(len(self.stack_list)-1, -1, -1):
+            print(self.stack_list[i])
+
+    def is_empty(self):
+        return len(self.stack_list) == 0
+
+    def peek(self):
+        if self.is_empty():
+            return None
+        else:
+            return self.stack_list[-1]
+
+    def size(self):
+        return len(self.stack_list)
+
+    def push(self, value):
+        self.stack_list.append(value)
+
+    def pop(self):
+        if self.is_empty():
+            return None
+        else:
+            return self.stack_list.pop()
+
+
+
+# WRITE IS_BALANCED_PARENTHESES FUNCTION HERE #
+#                                             #
+#    This is a separate function that is      #
+#    not a method within the Stack class.     #
+#    Indent all the way to the left.          #
+#                                             #
+###############################################
+
+
+
+
+balanced_parentheses = '((()))'
+unbalanced_parentheses = '((())))'
+
+print( is_balanced_parentheses(balanced_parentheses) )
+
+print( is_balanced_parentheses(unbalanced_parentheses) )
+
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    True
+    False
+
+"""
+
+
+
+
+
+Instructions:
+Stack: Reverse String (⚡Interview Question)
+The reverse_string function takes a single parameter string, which is the string you want to reverse.
+
+Return a new string with the letters in reverse order.
+
+This will use the Stack class we created in the last three coding exercises: 30, 31, 32
+
+*** Solution Explanation ***
+def reverse_string(string):
+    stack = Stack()
+    reversed_string = ""
+ 
+    for char in string:
+        stack.push(char)
+ 
+    while not stack.is_empty():
+        reversed_string += stack.pop()
+ 
+    return reversed_string
+
+
+The reverse_string() function uses a stack to reverse a string. The string is iterated over, and each character is added to the stack. After the stack is filled with all of the characters from the string, the stack is emptied and each character is added to the reversed_string variable. This creates a new string that is the reverse of the original.
+
+This approach works by using the Last-In-First-Out (LIFO) property of a stack. The first character in the string is the last character to be added to the stack, and the last character in the string is the first character to be removed from the stack. Therefore, reversing the order of the characters is simply a matter of pushing them onto the stack in the opposite order and then popping them off again in that order.
+
+
+
+Code with inline comments:
+
+
+
+def reverse_string(string):
+    # create a new stack
+    stack = Stack() 
+    # create an empty string to store the reversed string       
+    reversed_string = ""   
+ 
+    # push each character in the string onto the stack
+    for char in string:
+        stack.push(char)
+ 
+    # pop each character off the stack and append it to the reversed string
+    while not stack.is_empty():
+        reversed_string += stack.pop()
+ 
+    # return the reversed string
+    return reversed_string
+
+*** Code  ***
+class Stack:
+    def __init__(self):
+        self.stack_list = []
+
+    def print_stack(self):
+        for i in range(len(self.stack_list)-1, -1, -1):
+            print(self.stack_list[i])
+
+    def is_empty(self):
+        return len(self.stack_list) == 0
+
+    def peek(self):
+        if self.is_empty():
+            return None
+        else:
+            return self.stack_list[-1]
+
+    def size(self):
+        return len(self.stack_list)
+
+    def push(self, value):
+        self.stack_list.append(value)
+
+    def pop(self):
+        if self.is_empty():
+            return None
+        else:
+            return self.stack_list.pop()
+
+
+
+## WRITE REVERSE_STRING FUNCTION HERE ###
+#                                       #
+#  This is a separate function that is  #
+#  not a method within the Stack class. #
+#  Indent all the way to the left.      #
+#                                       #
+#########################################
+
+
+
+
+my_string = 'hello'
+
+print ( reverse_string(my_string) )
+
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    olleh
+
+"""
+
+
+
+Instructions:
+Stack: Sort Stack (⚡Interview Question)
+The sort_stack function takes a single argument, a Stack object.  The function should sort the elements in the stack in ascending order (the lowest value will be at the top of the stack) using only one additional stack.  The function should use the pop, push, peek, and is_empty methods of the Stack object.
+
+Note: This is a new function, not a method within the Stack class.
+
+This will use the Stack class we created in these coding exercises:
+30, 31, 32
+
+
+To sort the stack, you should create a new, empty stack to hold the sorted elements.  Then, while the original stack is not empty, you should remove the top element from the original stack and compare it to the top element of the sorted stack.  If the top element of the sorted stack is greater than the current element, you should move the top element of the sorted stack back to the original stack until the current element is in the correct position.  Finally, you should add the current element to the sorted stack.
+
+Once all the elements have been sorted, you should copy the sorted elements from the sorted stack to the original stack in the correct order.
+
+Overall, the function should have a time complexity of O(n^2), where n is the number of elements in the original stack, due to the nested loops used to compare the elements.  However, the function should only use one additional stack, which could be useful in situations where memory is limited.
+
+*** Solution Explanation ***
+def sort_stack(stack):
+    additional_stack = Stack()
+ 
+    while not stack.is_empty():
+        temp = stack.pop()
+ 
+        while not additional_stack.is_empty() and additional_stack.peek() > temp:
+            stack.push(additional_stack.pop())
+ 
+        additional_stack.push(temp)
+ 
+    while not additional_stack.is_empty():
+        stack.push(additional_stack.pop())
+
+
+The sort_stack function sorts a given stack of integers in ascending order using only one additional stack. Here's how it works:
+
+First, the function creates a new stack called additional_stack to hold the sorted elements.
+
+Next, the function enters a while loop that continues until the original stack is empty. Inside the loop, the function removes the top element from the original stack using the pop method and stores it in a temporary variable called temp.
+
+The function then enters another while loop that continues until the additional_stack is empty or the top element of additional_stack is less than or equal to temp. Inside the loop, the function removes the top element from the additional_stack using the pop method and adds it back to the original stack using the push method.
+
+Once the inner while loop is exited, the function adds the temp variable to the additional_stack using the push method. This ensures that the additional_stack is always sorted in ascending order.
+
+Once the outer while loop is exited, the function enters another while loop that continues until the additional_stack is empty. Inside the loop, the function removes the top element from the additional_stack using the pop method and adds it back to the original stack using the push method. This step ensures that the original stack is sorted in ascending order.
+
+Finally, the function returns the sorted stack.
+
+Overall, this implementation has a time complexity of O(n^2), where n is the number of elements in the original stack, because the function performs nested loops to compare all the elements with each other. However, it has the advantage of using only one additional stack, which could be useful in certain situations where memory is limited.
+
+
+
+Code with inline comments:
+
+
+
+def sort_stack(stack):
+    # Create a new stack to hold the sorted elements
+    additional_stack = Stack()
+ 
+    # While the original stack is not empty
+    while not stack.is_empty():
+        # Remove the top element from the original stack
+        temp = stack.pop()
+ 
+        # While the additional stack is not empty and 
+        #the top element is greater than the current element
+        while not additional_stack.is_empty() and additional_stack.peek() > temp:
+            # Move the top element from the additional stack to the original stack
+            stack.push(additional_stack.pop())
+ 
+        # Add the current element to the additional stack
+        additional_stack.push(temp)
+ 
+    # Copy the sorted elements from the additional stack to the original stack
+    while not additional_stack.is_empty():
+        stack.push(additional_stack.pop())
+
+*** Code ***
+class Stack:
+    def __init__(self):
+        self.stack_list = []
+
+    def print_stack(self):
+        for i in range(len(self.stack_list)-1, -1, -1):
+            print(self.stack_list[i])
+
+    def is_empty(self):
+        return len(self.stack_list) == 0
+
+    def peek(self):
+        if self.is_empty():
+            return None
+        else:
+            return self.stack_list[-1]
+
+    def size(self):
+        return len(self.stack_list)
+
+    def push(self, value):
+        self.stack_list.append(value)
+
+    def pop(self):
+        if self.is_empty():
+            return None
+        else:
+            return self.stack_list.pop()
+
+
+
+
+#### WRITE SORT_STACK FUNCTION HERE #####
+#                                       #
+#  This is a separate function that is  #
+#  not a method within the Stack class. #
+#  Indent all the way to the left.      #
+#                                       #
+#########################################
+
+
+
+
+my_stack = Stack()
+my_stack.push(3)
+my_stack.push(1)
+my_stack.push(5)
+my_stack.push(4)
+my_stack.push(2)
+
+print("Stack before sort_stack():")
+my_stack.print_stack()
+
+sort_stack(my_stack)
+
+print("\nStack after sort_stack:")
+my_stack.print_stack()
+
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    Stack before sort_stack():
+    2
+    4
+    5
+    1
+    3
+
+    Stack after sort_stack:
+    1
+    2
+    3
+    4
+    5
+
+"""
+
+
+
+Instructions:
+Queue Using Stacks: Enqueue (⚡Interview Question)
+You are given a class MyQueue which implements a queue using two stacks. Your task is to implement the enqueue method which should add an element to the back of the queue.
+
+To achieve this, you can use the two stacks stack1 and stack2. Initially, all elements are stored in stack1 and stack2 is empty. In order to add an element to the back of the queue, you need to first transfer all elements from stack1 to stack2 using a loop that pops each element from stack1 and pushes it onto stack2.
+
+Once all elements have been transferred to stack2, push the new element onto stack1. Finally, transfer all elements from stack2 back to stack1 in the same way as before, so that the queue maintains its ordering.
+
+Your implementation should satisfy the following constraints:
+
+
+
+The method signature should be def enqueue(self, value).
+
+The method should add the element value to the back of the queue.
+
+The method should run in constant time complexity, O(1).
+
+*** Solution Explanation ***
+def enqueue(self, value):
+        while len(self.stack1) > 0:
+            self.stack2.append(self.stack1.pop())
+        self.stack1.append(value)
+        while len(self.stack2) > 0:
+            self.stack1.append(self.stack2.pop())
+
+
+
+
+This code implements the enqueue method for a queue that is implemented using two stacks. The purpose of the enqueue method is to add an element to the back of the queue.
+
+Here's how the code works:
+
+
+
+First, the code checks if stack1 has any elements in it. If stack1 is not empty, the code enters a while loop.
+
+Inside the while loop, the code pops elements from stack1 one at a time and appends them to stack2. This is done so that we can add the new element to the bottom of stack1.
+
+Once all elements have been transferred from stack1 to stack2, the code appends the new element value to the bottom of stack1.
+
+Finally, the code enters another while loop to transfer all the elements from stack2 back to stack1 in their original order. This ensures that the queue is maintained in a First-In-First-Out (FIFO) ordering.
+
+
+
+
+
+Code with inline comments:
+
+
+
+def enqueue(self, value):
+    # Transfer all elements from stack1 to stack2
+    while len(self.stack1) > 0:
+        self.stack2.append(self.stack1.pop())
+    
+    # Add the new element to the bottom of stack1
+    self.stack1.append(value)
+    
+    # Transfer all elements back from stack2 to stack1
+    while len(self.stack2) > 0:
+        self.stack1.append(self.stack2.pop())
+
+*** Code ***
+ class MyQueue:
+    def __init__(self):
+        self.stack1 = []
+        self.stack2 = []
+        
+    # WRITE ENQUEUE MEHTOD HERE #
+    #                           #
+    #                           #
+    #                           #
+    #                           #
+    #############################
+
+    def peek(self):
+        return self.stack1[-1]
+
+    def is_empty(self):
+        return len(self.stack1) == 0
+        
+        
+
+# Create a new queue
+q = MyQueue()
+
+# Enqueue some values
+q.enqueue(1)
+q.enqueue(2)
+q.enqueue(3)
+
+# Output the front of the queue
+print("Front of the queue:", q.peek())
+
+# Check if the queue is empty
+print("Is the queue empty?", q.is_empty())
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    Front of the queue: 1
+    Is the queue empty? False
+    
+"""
+ 
+ 
+ 
+ 
+ Instructions:
+Queue Using Stacks: Dequeue (⚡Interview Question)
+You have been tasked with implementing a queue data structure using two stacks in Python, and you need to write the dequeue method.
+
+The dequeue method should remove and return the first element in the queue.
+
+*** Solution Explanation ***
+def dequeue(self):
+        if self.is_empty():
+            return None
+        else:
+            return self.stack1.pop()
+
+
+
+
+This code is the implementation of the dequeue method for a queue data structure implemented using two stacks.
+
+The purpose of the dequeue method is to remove and return the first element in the queue. In this implementation, the first element is always at the bottom of stack1.
+
+The code first checks if the queue is empty using the is_empty method. If the queue is empty, the method returns None because there are no elements to remove.
+
+If the queue is not empty, the method removes and returns the last element in stack1 using the pop method. This is because the first element in the queue is always at the bottom of stack1, and pop removes elements from the end of a list.
+
+Overall, this implementation of dequeue is efficient because it only requires popping elements from stack1. Any elements that were moved to stack2 during the enqueue operation are moved back to stack1 before the next dequeue operation, so there is no need to access stack2 in this method.
+
+
+
+
+
+Code with inline comments:
+
+
+
+def dequeue(self):
+    # Check if the queue is empty
+    if self.is_empty():
+        # Return None if the queue is empty
+        return None
+    else:
+        # Remove and return the last element in stack1
+        # which is the first element in the queue
+        return self.stack1.pop()
+
+
+*** Code ***
+class MyQueue:
+    def __init__(self):
+        self.stack1 = []
+        self.stack2 = []
+        
+    def enqueue(self, value):
+        while len(self.stack1) > 0:
+            self.stack2.append(self.stack1.pop())
+        self.stack1.append(value)
+        while len(self.stack2) > 0:
+            self.stack1.append(self.stack2.pop())
+
+    # WRITE DEQUEUE MEHTOD HERE #
+    #                           #
+    #                           #
+    #                           #
+    #                           #
+    #############################
+
+    def peek(self):
+        return self.stack1[-1]
+
+    def is_empty(self):
+        return len(self.stack1) == 0
+        
+        
+
+# Create a new queue
+q = MyQueue()
+
+# Enqueue some values
+q.enqueue(1)
+q.enqueue(2)
+q.enqueue(3)
+
+# Output the front of the queue
+print("Front of the queue:", q.peek())
+
+# Dequeue some values
+print("Dequeued value:", q.dequeue())
+print("Dequeued value:", q.dequeue())
+
+# Enqueue another value
+q.enqueue(4)
+
+# Output the front of the queue again
+print("Front of the queue:", q.peek())
+
+# Dequeue all remaining values
+print("Dequeued value:", q.dequeue())
+print("Dequeued value:", q.dequeue())
+
+# Check if the queue is empty
+print("Is the queue empty?", q.is_empty())
+
+# Dequeue from an empty queue and check if it returns None
+print("Dequeued value from empty queue:", q.dequeue())
+
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    Front of the queue: 1
+    Dequeued value: 1
+    Dequeued value: 2
+    Front of the queue: 3
+    Dequeued value: 3
+    Dequeued value: 4
+    Is the queue empty? True
+    Dequeued value from empty queue: None
+    
+"""
+
+
+
+Instructions:
+HT: Item In Common (⚡Interview Question)
+Write a function item_in_common(list1, list2) that takes two lists as input and returns True if there is at least one common item between the two lists, False otherwise.
+
+Use a dictionary to solve the problem that creates an O(n) time complexity.
+
+*** Solution Explanation ***
+def item_in_common(list1, list2):
+    my_dict = {}
+    for i in list1:
+        my_dict[i] = True
+ 
+    for j in list2:
+        if j in my_dict:
+            return True
+ 
+    return False
+ 
+
+The function uses a dictionary, my_dict, to store the elements from the first list.
+
+It then loops through the second list, checking if each element is in my_dict.
+
+If an element is found in my_dict, it means that it exists in both lists, so the function returns True.
+
+If no elements are found in common, the function returns False.
+
+
+
+
+
+Code with inline comments:
+
+
+
+def item_in_common(list1, list2):
+    # create an empty dictionary to store list1's values
+    my_dict = {}
+ 
+    # iterate through list1 and add each value to the dictionary as a key
+    for i in list1:
+        my_dict[i] = True
+ 
+    # iterate through list2 and check if each value is a key in the dictionary
+    for j in list2:
+        # if a value in list2 is also in the dictionary, return True
+        if j in my_dict:
+            return True
+ 
+    # if no values in common are found, return False
+    return False
+
+*** Code ***
+# WRITE ITEM_IN_COMMON FUNCTION HERE #
+#                                    #
+#                                    #
+#                                    #
+#                                    #
+######################################
+
+
+
+
+list1 = [1,3,5]
+list2 = [2,4,5]
+
+
+print(item_in_common(list1, list2))
+
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    True
+
+"""
+
+
+Instructions: 
+HT: Find Duplicates (⚡Interview Question)
+find_duplicates()
+
+
+Problem: Given an array of integers nums, find all the duplicates in the array using a hash table (dictionary).
+
+
+Input:
+
+A list of integers nums.
+
+
+Output:
+
+A list of integers representing the numbers in the input array nums that appear more than once. If no duplicates are found in the input array, return an empty list [].
+
+
+
+Input: nums = [4, 3, 2, 7, 8, 2, 3, 1]
+Output: [2, 3]
+Explanation: The numbers 2 and 3 appear more than once in the input array.
+ 
+Input: nums = [1, 2, 3, 4, 5]
+Output: []
+Explanation: There are no duplicates in the input array, so the function returns an empty list [].
+ 
+Input: nums = [3, 3, 3, 3, 3]
+Output: [3]
+Explanation: The number 3 appears more than once in the input array.
+ 
+Input: nums = [-1, 0, 1, 0, -1, -1, 2, 2]
+Output: [-1, 0, 2]
+Explanation: The numbers -1, 0, and 2 appear more than once in the input array.
+ 
+Input: nums = []
+Output: []
+Explanation: There are no numbers in the input array, so the function returns an empty list [].
+
+*** Solution Explanation ***
+def find_duplicates(nums):
+    num_counts = {}
+    for num in nums:
+        num_counts[num] = num_counts.get(num, 0) + 1
+    duplicates = [num for num, count in num_counts.items() if count > 1]
+    return duplicates
+
+
+
+
+The find_duplicates function takes an array of integers nums as input, and finds all the duplicates in the array using a hash table (dictionary). Here's an explanation of how the function works:
+
+The function creates an empty hash table called num_counts to store the numbers in the input array and their counts.
+
+The function loops through each number in the input array nums and adds the number to the hash table if it's not already in the hash table, or increments its count if it's already in the hash table. This is done using the get method of the hash table to get the current count of the number, and adding 1 to it.
+
+After the hash table is built, the function creates a list of the numbers that appear more than once in the input array. This is done using a list comprehension to iterate over the (num, count) pairs in the num_counts hash table and adding the numbers with counts greater than 1 to the duplicates list.
+
+Finally, the function returns the duplicates list, which contains all the numbers in the input array that appear more than once.
+
+
+It has a time complexity of O(n), where n is the length of the input array, because the hash table operations take constant time. This is more efficient than a brute-force solution that checks all pairs of numbers in the array, which would have a time complexity of O(n^2).
+
+
+
+
+
+ Code with inline comments:
+
+
+
+def find_duplicates(nums):
+    # create an empty hash table
+    num_counts = {}
+ 
+    # iterate through each number in the array
+    for num in nums:
+        # add the number to the hash table or increment its count if it's already in the hash table
+        num_counts[num] = num_counts.get(num, 0) + 1
+ 
+    # create a list of the numbers that appear more than once in the input array
+    duplicates = [num for num, count in num_counts.items() if count > 1]
+ 
+    # return the list of duplicates
+    return duplicates
+
+
+*** Code ***
+# WRITE FIND_DUPLICATES FUNCTION HERE #
+#                                     #
+#                                     #
+#                                     #
+#                                     #
+#######################################
+
+
+
+
+print ( find_duplicates([1, 2, 3, 4, 5]) )
+print ( find_duplicates([1, 1, 2, 2, 3]) )
+print ( find_duplicates([1, 1, 1, 1, 1]) )
+print ( find_duplicates([1, 2, 3, 3, 3, 4, 4, 5]) )
+print ( find_duplicates([1, 1, 2, 2, 2, 3, 3, 3, 3]) )
+print ( find_duplicates([1, 1, 1, 2, 2, 2, 3, 3, 3, 3]) )
+print ( find_duplicates([]) )
+
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    []
+    [1, 2]
+    [1]
+    [3, 4]
+    [1, 2, 3]
+    [1, 2, 3]
+    []
+
+"""
+
+
+
+
+Instructions: 
+HT: First Non-Repeating Character (⚡Interview Question)
+You have been given a string of lowercase letters.
+
+Write a function called first_non_repeating_char(string) that finds the first non-repeating character in the given string using a hash table (dictionary). If there is no non-repeating character in the string, the function should return None.
+
+For example, if the input string is "leetcode", the function should return "l" because "l" is the first character that appears only once in the string. Similarly, if the input string is "hello", the function should return "h" because "h" is the first non-repeating character in the string.
+
+*** Solution Explanation ***
+def first_non_repeating_char(string):
+    char_counts = {}
+    for char in string:
+        char_counts[char] = char_counts.get(char, 0) + 1
+    for char in string:
+        if char_counts[char] == 1:
+            return char
+    return None
+
+
+
+
+The first_non_repeating_char function takes a string as input and returns the first non-repeating character in the string using a hash table (dictionary). Here's an explanation of how the function works:
+
+The function creates an empty hash table called char_counts to store the frequency of each character in the string.
+
+The first loop iterates through each character in the input string and uses the get method to access the current count of that character in the hash table. If the character is not already in the hash table, its count is initialized to 0. The count is then incremented by 1 for each occurrence of the character in the string.
+
+The second loop iterates through each character in the input string again. For each character, the function checks the count of that character in the hash table. If the count is equal to 1, then the character is not repeated in the string, so the function returns that character as the first non-repeating character.
+
+If no non-repeating character is found in the string, the function returns None.
+
+
+It has a time complexity of O(n), where n is the length of the input string.
+
+
+
+Code with inline comments:
+
+
+
+def first_non_repeating_char(string):
+    # create an empty hash table to count the frequency of each character
+    char_counts = {}
+    # count the frequency of each character in the string
+    for char in string:
+        # this increments the count by 1 in the dictionary
+        char_counts[char] = char_counts.get(char, 0) + 1
+    # find the first non-repeating character in the string
+    for char in string:
+        if char_counts[char] == 1:
+            return char
+    # return None if no non-repeating character is found
+    return None
+
+
+
+Instructions: 
+HT: Group Anagrams (⚡Interview Question)
+You have been given an array of strings, where each string may contain only lowercase English letters. You need to write a function group_anagrams(strings) that groups the anagrams in the array together using a hash table (dictionary). The function should return a list of lists, where each inner list contains a group of anagrams.
+
+For example, if the input array is ["eat", "tea", "tan", "ate", "nat", "bat"], the function should return [["eat","tea","ate"],["tan","nat"],["bat"]] because the first three strings are anagrams of each other, the next two strings are anagrams of each other, and the last string has no anagrams in the input array.
+
+You need to implement the group_anagrams(strings) function and return a list of lists, where each inner list contains a group of anagrams according to the above requirements.
+
+*** Solution Explanation ***
+def group_anagrams(strings):
+    anagram_groups = {}
+    for string in strings:
+        canonical = ''.join(sorted(string))
+        if canonical in anagram_groups:
+            anagram_groups[canonical].append(string)
+        else:
+            anagram_groups[canonical] = [string]
+    return list(anagram_groups.values())
+
+
+
+
+The group_anagrams function takes an array of strings as input and groups the anagrams together using a hash table (dictionary). Here's an explanation of how the function works:
+
+The function creates an empty hash table called anagram_groups to store the groups of anagrams.
+
+The function loops through each string in the input array and sorts the characters in each string to get its canonical form.  In the context of this code, "canonical" means the standardized or normalized form of a string that can be used to compare it to other strings to see if they are anagrams. The canonical form is used as the key in the hash table.
+
+The value in the hash table is a list of strings.
+
+The function checks if the canonical form of the current string is already in the hash table. If it is, the current string is added to the existing list of anagrams in the hash table. If not, the current string is added to the hash table as a new group of anagrams.
+
+After the loop finishes, the function returns a list of lists containing the groups of anagrams in the input array. The output is obtained by calling the values method on the anagram_groups hash table, which returns a list of the hash table's values.
+
+
+It has a time complexity of O(n * k log k), where n is the length of the input array and k is the maximum length of a string in the input array.  The time complexity comes from sorting each string in the array, which takes O(k log k) time, and the loop that goes through each string in the array, which takes O(n) time.
+
+
+
+Code with inline comments:
+
+
+
+def group_anagrams(strings):
+    # create an empty hash table
+    anagram_groups = {}
+ 
+    # iterate through each string in the array
+    for string in strings:
+        # sort each string to get its canonical form
+        # sorted('eat') returns ['a', 'e', 't']
+        # ''.join(['a', 'e', 't']) coverts the array of chars to 'aet' string
+        canonical = ''.join(sorted(string))
+ 
+        # check to see if the canonical form of the string exists in the hash table
+        if canonical in anagram_groups:
+            # if it does then add the string there
+            anagram_groups[canonical].append(string)
+        else:
+            # otherwise create new canonical form and add the string there
+            anagram_groups[canonical] = [string]
+ 
+    # convert the hash table to a list of lists
+    return list(anagram_groups.values())
+
+*** OUTPUT ***
+# WRITE GROUP_ANAGRAMS FUNCTION HERE #
+#                                    #
+#                                    #
+#                                    #
+#                                    #
+######################################
+
+
+
+
+print("1st set:")
+print( group_anagrams(["eat", "tea", "tan", "ate", "nat", "bat"]) )
+
+print("\n2nd set:")
+print( group_anagrams(["abc", "cba", "bac", "foo", "bar"]) )
+
+print("\n3rd set:")
+print( group_anagrams(["listen", "silent", "triangle", "integral", "garden", "ranged"]) )
+
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    1st set:
+    [['eat', 'tea', 'ate'], ['tan', 'nat'], ['bat']]
+
+    2nd set:
+    [['abc', 'cba', 'bac'], ['foo'], ['bar']]
+
+    3rd set:
+    [['listen', 'silent'], ['triangle', 'integral'], ['garden', 'ranged']]
+
+"""
+
+
+
+
+Instructions: 
+HT: Two Sum (⚡Interview Question)
+two_sum()
+
+Problem: Given an array of integers nums and a target integer target, find the indices of two numbers in the array that add up to the target.
+
+Input:
+
+A list of integers nums .
+
+A target integer target.
+
+Output:
+
+A list of two integers representing the indices of the two numbers in the input array nums that add up to the target. If no two numbers in the input array add up to the target, return an empty list [].
+
+
+
+Example:
+
+
+
+Input: nums = [2, 7, 11, 15], target = 9
+Output: [0, 1]
+Explanation: The numbers at indices 0 and 1 in the array add up to the target 9.
+ 
+Input: nums = [3, 2, 4], target = 6
+Output: [1, 2]
+Explanation: The numbers at indices 1 and 2 in the array add up to the target 6.
+ 
+Input: nums = [3, 3], target = 6
+Output: [0, 1]
+Explanation: The numbers at indices 0 and 1 in the array add up to the target 6.
+ 
+Input: nums = [1, 2, 3, 4, 5], target = 10
+Output: []
+Explanation: There are no two numbers in the array add up to the target 10.
+ 
+Input: nums = [], target = 0
+Output: []
+Explanation: There are no numbers in the input array, so the function returns an empty list [].
+
+*** Solution Explanation ***
+
+def two_sum(nums, target):
+    num_map = {}
+    for i, num in enumerate(nums):
+        complement = target - num
+        if complement in num_map:
+            return [num_map[complement], i]
+        num_map[num] = i
+    return []
+
+
+
+
+The two_sum function takes an array of integers nums and a target integer target as input, and finds two numbers in the array that add up to the target using a hash table. Here's an explanation of how the function works:
+
+The function creates an empty hash table called num_map to store the numbers in the input array and their indices.
+
+The function loops through each number in the input array nums and uses the enumerate function to get the index of each number. For each number, it calculates the complement of the number by subtracting it from the target.
+
+The function checks if the complement is already in the hash table num_map. If it is, the function returns the indices of the two numbers that add up to the target. The indices are stored in a list [num_map[complement], i] where num_map[complement] is the index of the complement of the current number, and i is the index of the current number.
+
+If the complement is not in the hash table num_map, the function adds the current number and its index to the hash table. This is done by setting num_map[num] = i, where num is the current number and i is its index.
+
+After the loop finishes, the function returns an empty list []. This is because no two numbers in the input array add up to the target.
+
+
+It has a time complexity of O(n), where n is the length of the input array, because the hash table operations take constant time. This is more efficient than a brute-force solution that checks all pairs of numbers in the array, which would have a time complexity of O(n^2).
+
+
+
+
+
+Code with inline comments:
+
+
+
+def two_sum(nums, target):
+    # create an empty hash table
+    num_map = {}
+ 
+    # iterate through each number in the array
+    for i, num in enumerate(nums):
+        # calculate the complement of the current number
+        complement = target - num
+ 
+        # check if the complement is in the hash table
+        if complement in num_map:
+            # if it is, return the indices of the two numbers
+            return [num_map[complement], i]
+ 
+        # add the current number and its index to the hash table
+        num_map[num] = i
+ 
+    # if no two numbers add up to the target, return an empty list
+    return []
+
+
+*** OUTPUT ***
+# WRITE TWO_SUM FUNCTION HERE #
+#                             #
+#                             #
+#                             #
+#                             #
+###############################
+    
+    
+    
+    
+print ( two_sum([2, 7, 11, 15], 9) )
+print ( two_sum([3, 2, 4], 6) )
+print ( two_sum([3, 3], 6) )
+print ( two_sum([1, 2, 3, 4, 5], 10) )
+print ( two_sum([1, 2, 3, 4, 5], 7) )
+print ( two_sum([1, 2, 3, 4, 5], 3) )
+print ( two_sum([], 0) )
+
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    [0, 1]
+    [1, 2]
+    [0, 1]
+    []
+    [2, 3]
+    [0, 1]
+    []
+
+"""
+
+
+
+
+Instructions: 
+HT: Subarray Sum (⚡Interview Question)
+Given an array of integers nums and a target integer target, write a Python function called subarray_sum that finds the indices of a contiguous subarray in nums that add up to the target sum using a hash table (dictionary).
+
+Your function should take two arguments:
+
+nums: a list of integers representing the input array
+
+target: an integer representing the target sum
+
+
+Your function should return a list of two integers representing the starting and ending indices of the subarray that adds up to the target sum. If there is no such subarray, your function should return an empty list.
+
+For example:
+
+
+
+nums = [1, 2, 3, 4, 5]
+target = 9
+print(subarray_sum(nums, target))  # should print [1, 3]
+
+
+Note that there may be multiple subarrays that add up to the target sum, but your function only needs to return the indices of any one such subarray. Also, the input list may contain both positive and negative integers.
+
+*** Solution Explanation ***
+def subarray_sum(nums, target):
+    sum_index = {0: -1}
+    current_sum = 0
+    for i, num in enumerate(nums):
+        current_sum += num
+        if current_sum - target in sum_index:
+            return [sum_index[current_sum - target] + 1, i]
+        sum_index[current_sum] = i
+    return []
+
+
+
+
+The subarray_sum function takes an input list of integers nums and a target sum target. It finds the indices of a contiguous subarray in nums that add up to the target sum.
+
+The function works by keeping a running sum of the elements of the input list using the current_sum variable, and storing this sum as a key in a hash table called sum_index. The corresponding value of each key is the index of the last element that adds to the sum.
+
+At each iteration, the function checks if the difference between the current sum and the target sum has been seen before in the sum_index hash table. If so, the function returns the indices of the subarray that adds up to the target sum.
+
+If the difference between the current sum and the target sum has not been seen before, the function adds the current sum and its index to the sum_index hash table, and continues to the next element in the input list.
+
+If no subarray is found, the function returns an empty list.
+
+Overall, the function has a time complexity of O(n) because it loops through the input list exactly once. The space complexity of the function is also O(n), since the sum_index hash table can potentially store all n elements of the input list.
+
+
+
+
+
+Code with inline comments:
+
+
+
+def subarray_sum(nums, target):
+    # create an empty hash table and set the initial sum and index
+    sum_index = {0: -1}
+    current_sum = 0
+ 
+    # loop through each number in the input array
+    for i, num in enumerate(nums):
+        # add the number to the current sum
+        current_sum += num
+ 
+        # check if the difference between the current sum and the target sum has been seen before
+        if current_sum - target in sum_index:
+            # return the indices of the subarray that adds up to the target sum
+            return [sum_index[current_sum - target] + 1, i]
+ 
+        # add the current sum and its index to the hash table
+        sum_index[current_sum] = i
+ 
+    # if no subarray is found, return an empty list
+    return []
+
+*** OUTPUT ***
+# WRITE SUBARRAY_SUM FUNCTION HERE #
+#                                  #
+#                                  #
+#                                  #
+#                                  #
+####################################
+
+
+
+
+nums = [1, 2, 3, 4, 5]
+target = 9
+print ( subarray_sum(nums, target) )
+
+nums = [-1, 2, 3, -4, 5]
+target = 0
+print ( subarray_sum(nums, target) )
+
+nums = [2, 3, 4, 5, 6]
+target = 3
+print ( subarray_sum(nums, target) )
+
+nums = []
+target = 0
+print ( subarray_sum(nums, target) )
+
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    [1, 3]
+    [0, 3]
+    [1, 1]
+    []
+
+"""
+
+
+Instructions: 
+Set: Remove Duplicates (⚡Interview Question)
+You have been given a list my_list with some duplicate values. Your task is to write a Python program that removes all the duplicates from the list using a set and then prints the updated list.
+
+You need to implement a function remove_duplicates(my_list) that takes in the input list my_list as a parameter and returns a new list with no duplicates.
+
+Your function should not modify the original list, instead, it should create a new list with unique values and return it.
+
+Example:
+
+
+
+Input:
+my_list = [1, 2, 3, 4, 1, 2, 5, 6, 7, 3, 4, 8, 9, 5]
+ 
+Output:
+[1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+
+Note:
+
+The order of the elements in the updated list may be different from the original list, as sets are unordered.
+
+*** Solution Explanation ***
+def remove_duplicates(my_list): 
+    # Convert the list to a set and then back to a list to remove duplicates 
+    new_list = list(set(my_list)) 
+    return new_list
+
+
+In this code, we have defined a function remove_duplicates that takes in a list my_list as a parameter.
+
+Inside the function, we convert the input list to a set using set(my_list).
+
+Since sets only contain unique elements, this will automatically remove any duplicates.
+
+We then convert the set back to a list using list(set(my_list)) and store the result in a new list variable called new_list.
+
+Finally, we return the updated new_list.
+
+*** OUTPUT ***
+# WRITE REMOVE_DUPLICATES FUNCTION HERE #
+#                                       #
+#                                       #
+#                                       #
+#                                       #
+#########################################
+
+
+
+my_list = [1, 2, 3, 4, 1, 2, 5, 6, 7, 3, 4, 8, 9, 5]
+new_list = remove_duplicates(my_list)
+print(new_list)
+
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+    (Order may be different as sets are unordered)
+
+"""
+
+
+
+Instructions: 
+Set: Has Unique Chars (⚡Interview Question)
+Write a function called has_unique_chars that takes a string as input and returns True if all the characters in the string are unique, and False otherwise.
+
+For example, has_unique_chars('abcdefg') should return True, while has_unique_chars('hello') should return False.
+
+*** Solution Explanation ***
+def has_unique_chars(string):
+    char_set = set()
+    for char in string:
+        if char in char_set:
+            return False
+        char_set.add(char)
+    return True
+
+
+
+
+The has_unique_chars function takes a single argument, string, which is the string we want to check for unique characters.
+
+The first thing the function does is create an empty set called char_set. This set will be used to keep track of the characters we have seen in the string so far.
+
+Next, the function loops through each character in the string using a for loop. For each character, the function checks if it is already in the char_set set by using the in operator. If the character is already in the set, that means it is a duplicate, so the function immediately returns False.
+
+If the character is not already in the set, the function adds it to the set using the add method. This way, we can keep track of all the characters we have seen so far.
+
+After the loop has finished, the function returns True. This means that the string has no duplicates, since the function has not returned False at any point during the loop.
+
+
+
+Code with inline comments:
+
+
+
+def has_unique_chars(string):
+    # Create an empty set to store characters
+    char_set = set()
+    # Loop through each character in the string
+    for char in string:
+        # Check if the character is already in the set
+        if char in char_set:
+            # If it is, return False (the string has duplicate characters)
+            return False
+        # If the character is not in the set, add it to the set
+        char_set.add(char)
+    # If we get to the end of the string without finding duplicates, return True
+    return True
+
+
+*** OUTPUT ***
+# WRITE HAS_UNIQUE_CHARS FUNCTION HERE #
+#                                      #
+#                                      #
+#                                      #
+#                                      #
+########################################
+
+
+
+
+print(has_unique_chars('abcdefg')) # should return True
+print(has_unique_chars('hello')) # should return False
+print(has_unique_chars('')) # should return True
+print(has_unique_chars('0123456789')) # should return True
+print(has_unique_chars('abacadaeaf')) # should return False
+
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    True
+    False
+    True
+    True
+    False
+
+"""
+
+
+
+
+Instructions: 
+Set: Find Pairs (⚡Interview Question)
+You are given two lists of integers, arr1 and arr2, and a target integer value, target. Your task is to find all pairs of numbers (one from arr1 and one from arr2) whose sum equals target.
+
+Write a function called find_pairs that takes in three arguments: arr1, arr2, and target, and returns a list of all such pairs.
+
+Input
+
+Your function should take in the following inputs:
+
+arr1: a list of integers
+
+arr2: a list of integers
+
+target: an integer
+
+
+Output
+
+Your function should return a list of tuples, where each tuple contains two integers from arr1 and arr2 that add up to target.
+
+
+Example
+
+Here's an example of what your function should return:
+
+arr1 = [1, 2, 3, 4, 5]
+arr2 = [2, 4, 6, 8, 10]
+target = 7
+ 
+pairs = find_pairs(arr1, arr2, target)
+print (pairs)
+# Output: [(5, 2), (3, 4), (1, 6)]
+
+
+In this example, the pairs (5, 2) , (3, 4) , and (1, 6) are the only pairs of numbers (one from arr1 and one from arr2) whose sum is 7.
+
+*** Solution Explanation ***
+
+def find_pairs(arr1, arr2, target):
+    set1 = set(arr1)
+    pairs = []
+    for num in arr2:
+        complement = target - num
+        if complement in set1:
+            pairs.append((complement, num))
+    return pairs
+
+
+
+
+The find_pairs function takes three arguments: arr1, arr2, and target.
+
+arr1 and arr2 are lists of integers.
+
+The function creates a set called set1 containing all the elements in arr1.
+
+target is also an integer, which represents the target sum that the function is looking for.
+
+The function then initializes an empty list called pairs.
+
+The function then loops through each element in arr2 and for each element, it calculates its complement as complement = target - num.
+
+The function then checks if complement is present in set1 using the in operator.  If it is, then the function has found a pair of numbers that add up to target, and it appends this pair (in the form of a tuple) to the pairs list.
+
+Finally, the function returns the pairs list, which contains all pairs of numbers from arr1 and arr2 that add up to target.
+
+
+
+Code with inline comments:
+
+
+
+def find_pairs(arr1, arr2, target):
+    # Convert arr1 to a set for O(1) lookup
+    set1 = set(arr1)
+    # Initialize an empty list to store the pairs
+    pairs = []
+    # Loop through each number in arr2
+    for num in arr2:
+        # Calculate the complement of the current number
+        complement = target - num
+        # Check if the complement is in set1
+        if complement in set1:
+            # If it is, add the pair to the pairs list
+            pairs.append((complement, num))
+    # Return the list of pairs that add up to the target value
+    return pairs
+
+*** OUTPUT ***
+# WRITE FIND_PAIRS FUNCTION HERE #
+#                                #
+#                                #
+#                                #
+#                                #
+##################################
+
+
+
+
+arr1 = [1, 2, 3, 4, 5]
+arr2 = [2, 4, 6, 8, 10]
+target = 7
+
+pairs = find_pairs(arr1, arr2, target)
+print (pairs)
+
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    [(5, 2), (3, 4), (1, 6)]
+
+"""
+
+
+
+
+Instructions: 
+Set: Longest Consecutive Sequence (⚡Interview Question)
+Given an unsorted array of integers, write a function that finds the length of the  longest_consecutive_sequence (i.e., sequence of integers in which each element is one greater than the previous element).
+
+Use sets to optimize the runtime of your solution.
+
+Input: An unsorted array of integers, nums.
+
+Output: An integer representing the length of the longest consecutive sequence in nums.
+
+Example:
+
+
+
+Input: nums = [100, 4, 200, 1, 3, 2]
+Output: 4
+Explanation: The longest consecutive sequence in the input array is [4, 3, 2, 1], and its length is 4.
+
+*** Solution Explanation ***
+def longest_consecutive_sequence(nums):
+    num_set = set(nums)
+    longest_sequence = 0
+    
+    for num in nums:
+        if num - 1 not in num_set:
+            current_num = num
+            current_sequence = 1
+            
+            while current_num + 1 in num_set:
+                current_num += 1
+                current_sequence += 1
+            
+            longest_sequence = max(longest_sequence, current_sequence)
+    
+    return longest_sequence
+
+
+
+
+The longest_consecutive_sequence function takes an unsorted array of integers called nums as input, and returns the length of the longest consecutive sequence in the array.
+
+Here's how it works:
+
+First, the function creates a set called num_set that contains all the elements of nums. Creating a set from the array allows the function to check whether an element is in the array in constant time, which optimizes the runtime of the solution.
+
+The function initializes the variable longest_sequence to zero, which will be updated as the function finds longer sequences.
+
+Next, the function loops through each number in the nums array. For each number, it checks if the previous number is not in num_set, which means the current number is the start of a new sequence. If the previous number is not in num_set, the function initializes a variable current_num to the current number and a variable current_sequence to 1, since the current number is the first element of a new sequence.
+
+The function then loops through the remaining elements of the sequence, incrementing the current_num and current_sequence variables for each element that is one more than the previous element. This loop stops when the next element is not in num_set, which means the sequence has ended.
+
+Once the loop has ended, the function updates the longest_sequence variable to the maximum of its current value and the current_sequence value, since current_sequence represents the length of the sequence that has just been found.
+
+Finally, the function returns the longest_sequence.
+
+
+The use of sets to check whether an element is in the array in constant time allows this algorithm to run in O(n) time, where n is the number of elements in the input array nums.
+
+
+
+Code with inline comments:
+
+
+
+def longest_consecutive_sequence(nums):
+    # Create a set to keep track of the numbers in the array
+    num_set = set(nums)
+    longest_sequence = 0
+    
+    # Loop through the numbers in the nums array
+    for num in nums:
+        # Check if the current number is the start of a new sequence
+        if num - 1 not in num_set:
+            current_num = num
+            current_sequence = 1
+            
+            # Keep incrementing the current number until the end of the sequence is reached
+            while current_num + 1 in num_set:
+                current_num += 1
+                current_sequence += 1
+            
+            # Update the longest sequence if the current sequence is longer
+            longest_sequence = max(longest_sequence, current_sequence)
+    
+    return longest_sequence
+
+*** OUTPUT ***
+# WRITE LONGEST_CONSECUTIVE_SEQUENCE FUNCTION HERE #
+#                                                  #
+#                                                  #
+#                                                  #
+#                                                  #
+####################################################
+
+
+
+print( longest_consecutive_sequence([100, 4, 200, 1, 3, 2]) )
+
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    4
+
+"""
+
+
+
+
+Instructions: 
+Bubble Sort of LL (⚡Interview Question)
+Assignment:
+
+Write a bubble_sort() method in the LinkedList class that will sort the elements of a linked list in ascending order using the bubble sort algorithm. The method should update the head and tail pointers of the linked list to reflect the new order of the nodes in the list. You can assume that the input linked list will contain only integers. You should not use any additional data structures to sort the linked list.
+
+
+
+Input:
+
+The LinkedList object containing a linked list with unsorted elements (self).
+
+
+
+Output:
+
+None. The method sorts the linked list in place.
+
+
+
+Method Description:
+
+If the length of the linked list is less than 2, the method returns and the list is assumed to be already sorted.
+
+The bubble sort algorithm works by repeatedly iterating through the unsorted part of the list, comparing adjacent elements and swapping them if they are in the wrong order.
+
+The method starts with the entire linked list being the unsorted part of the list.
+
+For each pass through the unsorted part of the list, the method iterates through each pair of adjacent elements and swaps them if they are in the wrong order.
+
+After each pass, the largest element in the unsorted part of the list will "bubble up" to the end of the list.
+
+The method continues iterating through the unsorted part of the list until no swaps are made during a pass.
+
+After the linked list is fully sorted, the head and tail pointers of the linked list are updated to reflect the new order of the nodes in the list.
+
+
+
+Constraints:
+
+The linked list can contain duplicates.
+
+The method should be implemented in the LinkedList class.
+
+The method should not use any additional data structures to sort the linked list.
+
+*** Solution Explanation ***
+ def bubble_sort(self):
+        if self.length < 2:
+            return
+        
+        sorted_until = None
+        
+        while sorted_until != self.head.next:
+            current = self.head
+            while current.next != sorted_until:
+                next_node = current.next
+                if current.value > next_node.value:
+                    current.value, next_node.value = next_node.value, current.value
+                current = current.next
+            sorted_until = current
+        
+        self.tail = current
+
+
+
+
+This code defines a method called bubble_sort that is used to sort a linked list in ascending order using the bubble sort algorithm. Here is a step-by-step explanation of the code:
+
+
+
+The method starts by checking if the length of the linked list is less than 2. If this is the case, the list is already sorted, and the method returns without doing anything.
+
+    if self.length < 2:
+        return
+
+
+If the length of the linked list is greater than or equal to 2, the method initializes a variable called sorted_until to None.
+
+    sorted_until = None
+
+
+The method then enters a while loop that continues until sorted_until is equal to the second node in the linked list. This is because, on each pass through the loop, the largest unsorted element is bubbled up to the end of the unsorted portion of the list, so we don't need to compare it again on the next pass.
+
+    while sorted_until != self.head.next:
+
+
+Inside the outer while loop, the method initializes a variable called current to the head of the list.
+
+        current = self.head
+
+
+The method then enters an inner while loop that continues until current reaches the node just before sorted_until. This is because the elements after sorted_until are already sorted, so we don't need to compare them again.
+
+        while current.next != sorted_until:
+
+
+Inside the inner while loop, the method initializes a variable called next_node to the node after current. If current is greater than next_node, the method swaps their values using Python's tuple unpacking syntax.
+
+            next_node = current.next
+            if current.value > next_node.value:
+                current.value, next_node.value = next_node.value, current.value
+
+
+After swapping the values if necessary, the method moves the current pointer to the next node in the list.
+
+            current = current.next
+
+
+Once the inner while loop is finished, the method updates the sorted_until pointer to the current node.
+
+        sorted_until = current
+
+
+After the outer while loop is finished, the tail of the linked list is updated to the last node processed in the loop, which is also the largest element in the list.
+
+        self.tail = current
+
+
+The linked list is now sorted in ascending order. Note that this implementation modifies the linked list in place and does not return a new list.
+
+
+
+
+
+Code with inline comments:
+
+
+
+def bubble_sort(self):
+    # Check if the list has less than 2 elements
+    if self.length < 2:
+        return
+    
+    # Initialize the sorted_until pointer to None
+    sorted_until = None
+    
+    # Continue sorting until sorted_until reaches the second node
+    while sorted_until != self.head.next:
+        # Initialize current pointer to head of the list
+        current = self.head
+        
+        # Iterate through unsorted portion of the list until sorted_until
+        while current.next != sorted_until:
+            next_node = current.next
+            
+            # Swap current and next_node values if current is greater
+            if current.value > next_node.value:
+                current.value, next_node.value = next_node.value, current.value
+            
+            # Move current pointer to next node
+            current = current.next
+        
+        # Update sorted_until pointer to the last node processed
+        sorted_until = current
+    
+    # Update tail pointer to last node processed (i.e. largest element)
+    self.tail = current
+
+
+
+*** OUTPUT ***
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.next = None
+        
+
+class LinkedList:
+    def __init__(self, value):
+        new_node = Node(value)
+        self.head = new_node
+        self.tail = new_node
+        self.length = 1
+
+    def print_list(self):
+        temp = self.head
+        while temp is not None:
+            print(temp.value)
+            temp = temp.next
+        
+    def append(self, value):
+        new_node = Node(value)
+        if self.head is None:
+            self.head = new_node
+            self.tail = new_node
+        else:
+            self.tail.next = new_node
+            self.tail = new_node
+        self.length += 1
+
+    # WRITE BUBBLE_SORT METHOD HERE #
+    #                               #
+    #                               #
+    #                               #
+    #                               #
+    #################################
+
+
+
+my_linked_list = LinkedList(4)
+my_linked_list.append(2)
+my_linked_list.append(6)
+my_linked_list.append(5)
+my_linked_list.append(1)
+my_linked_list.append(3)
+
+print("Linked List Before Sort:")
+my_linked_list.print_list()
+
+my_linked_list.bubble_sort()
+
+print("\nSorted Linked List:")
+my_linked_list.print_list()
+
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    Linked List Before Sort:
+    4
+    2
+    6
+    5
+    1
+    3
+
+    Sorted Linked List:
+    1
+    2
+    3
+    4
+    5
+    6
+
+"""
+
+
+
+
+Instructions: 
+Selection Sort of LL (⚡Interview Question)
+Assignment:
+
+Write a selection_sort() method in the LinkedList class that will sort the elements of a linked list in ascending order using the selection sort algorithm. The method should update the head and tail pointers of the linked list to reflect the new order of the nodes in the list. You can assume that the input linked list will contain only integers. You should not use any additional data structures to sort the linked list.
+
+
+
+Input:
+
+The LinkedList object containing a linked list with unsorted elements (self).
+
+
+
+Output:
+
+None. The method sorts the linked list in place.
+
+
+
+Method Description:
+
+If the length of the linked list is less than 2, the method returns and the list is assumed to be already sorted.
+
+The selection sort algorithm works by repeatedly finding the smallest element in the unsorted part of the list and swapping it with the first element in the unsorted part of the list.
+
+The method starts with the entire linked list being the unsorted part of the list.
+
+For each pass through the unsorted part of the list, the method iterates through each element to find the smallest element in the unsorted part of the list. Once the smallest element is found, it is swapped with the first element in the unsorted part of the list.
+
+After each pass, the smallest element in the unsorted part of the list will be at the beginning of the unsorted part of the list.
+
+The method continues iterating through the unsorted part of the list until the entire list is sorted.
+
+After the linked list is fully sorted, the head and tail pointers of the linked list are updated to reflect the new order of the nodes in the list.
+
+
+
+Constraints:
+
+The linked list can contain duplicates.
+
+The method should be implemented in the LinkedList class.
+
+The method should not use any additional data structures to sort the linked list.
+
+*** Solution Explanation ***
+def selection_sort(self):
+        if self.length < 2:
+            return
+        current = self.head
+        while current.next is not None:
+            smallest = current
+            inner_current = current.next
+            while inner_current is not None:
+                if inner_current.value < smallest.value:
+                    smallest = inner_current
+                inner_current = inner_current.next
+            if smallest != current:
+                current.value, smallest.value = smallest.value, current.value        
+            current = current.next
+        self.tail = current
+
+
+
+
+This code defines a method called selection_sort that is used to sort a linked list in ascending order using the selection sort algorithm. Here is a step-by-step explanation of the code:
+
+
+
+The method starts by checking if the length of the linked list is less than 2. If this is the case, the list is already sorted, and the method returns without doing anything.
+
+if self.length < 2:
+    return
+
+
+If the length of the linked list is greater than or equal to 2, the method initializes a variable called current to the head of the list.
+
+current = self.head
+
+
+The method then enters a while loop that continues until current reaches the second to last node in the list. This is because, on each pass through the loop, the smallest unsorted element is selected and moved to the beginning of the unsorted portion of the list, so we don't need to compare it again on the next pass.
+
+while current.next is not None:
+
+
+Inside the loop, the method initializes a variable called smallest to the current node and a variable called inner_current to the next node after current.
+
+    smallest = current
+    inner_current = current.next
+
+
+The method then enters an inner while loop that continues until inner_current is None. Inside the loop, the method checks if the value of inner_current is smaller than the value of smallest. If so, the method updates smallest to point to inner_current.
+
+    while inner_current is not None:
+        if inner_current.value < smallest.value:
+            smallest = inner_current
+        inner_current = inner_current.next
+
+
+After the inner while loop completes, the method checks if smallest is different from the current node. If so, the method swaps their values using Python's tuple unpacking syntax.
+
+    if smallest != current:
+        current.value, smallest.value = smallest.value, current.value
+
+
+Finally, the method moves the current pointer to the next node in the list.
+
+    current = current.next
+
+
+Once the while loop is finished, the tail of the linked list is updated to the last node processed in the loop, which is also the largest element in the list.
+
+self.tail = current
+
+
+The linked list is now sorted in ascending order. Note that this implementation modifies the linked list in place and does not return a new list.
+
+
+
+
+
+Code with inline comments:
+
+
+
+# Define a method to sort a linked list in ascending order 
+# using the selection sort algorithm
+def selection_sort(self):
+    # If the linked list has less than 2 elements, it is already sorted
+    if self.length < 2:
+        return
+ 
+    # Start with the first node as the current node
+    current = self.head
+ 
+    # While there is at least one more node after the current node
+    while current.next is not None:
+        # Assume the current node has the smallest value so far
+        smallest = current
+        # Start with the next node as the inner current node
+        inner_current = current.next
+        
+        # Find the node with the smallest value among the remaining nodes
+        while inner_current is not None:
+            if inner_current.value < smallest.value:
+                smallest = inner_current
+            inner_current = inner_current.next
+        
+        # If the node with the smallest value is not the current node,
+        # swap their values
+        if smallest != current:
+            current.value, smallest.value = smallest.value, current.value        
+ 
+        # Move to the next node
+        current = current.next
+    
+    # Set the tail of the linked list to the last node processed
+    self.tail = current
+
+
+*** OUTPUT ***
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.next = None
+        
+
+class LinkedList:
+    def __init__(self, value):
+        new_node = Node(value)
+        self.head = new_node
+        self.tail = new_node
+        self.length = 1
+
+    def print_list(self):
+        temp = self.head
+        while temp is not None:
+            print(temp.value)
+            temp = temp.next
+        
+    def append(self, value):
+        new_node = Node(value)
+        if self.head is None:
+            self.head = new_node
+            self.tail = new_node
+        else:
+            self.tail.next = new_node
+            self.tail = new_node
+        self.length += 1
+
+    # WRITE SELECTION_SORT METHOD HERE #
+    #                                  #
+    #                                  #
+    #                                  #
+    #                                  #
+    ####################################
+
+
+
+my_linked_list = LinkedList(4)
+my_linked_list.append(2)
+my_linked_list.append(6)
+my_linked_list.append(5)
+my_linked_list.append(1)
+my_linked_list.append(3)
+
+print("Linked List Before Sort:")
+my_linked_list.print_list()
+
+my_linked_list.selection_sort()
+
+print("\nSorted Linked List:")
+my_linked_list.print_list()
+
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    Linked List Before Sort:
+    4
+    2
+    6
+    5
+    1
+    3
+
+    Sorted Linked List:
+    1
+    2
+    3
+    4
+    5
+    6
+
+"""
+
+
+
+Instructions: 
+Insertion Sort of LL (⚡Interview Question)
+Assignment:
+
+Write an insertion_sort() method in the LinkedList class that will sort the elements of a linked list in ascending order using the insertion sort algorithm.
+
+The method should update the head and tail pointers of the linked list to reflect the new order of the nodes in the list.
+
+You can assume that the input linked list will contain only integers. You should not use any additional data structures to sort the linked list.
+
+
+
+Input:
+
+The LinkedList object containing a linked list with unsorted elements (self).
+
+
+
+Output:
+
+None. The method sorts the linked list in place.
+
+
+
+Method Description:
+
+If the length of the linked list is less than 2, the method returns and the list is assumed to be already sorted.
+
+The first element of the linked list is treated as the sorted part of the list, and the second element is treated as the unsorted part of the list.
+
+The first element of the sorted part of the list is then disconnected from the rest of the list, creating a new linked list with only one element.
+
+The method then iterates through each remaining node in the unsorted part of the list.
+
+For each node in the unsorted part of the list, the method determines its correct position in the sorted part of the list by comparing its value with the values of the other nodes in the sorted part of the list.
+
+Once the correct position has been found, the node is inserted into the sorted part of the list at the appropriate position.
+
+After all the nodes in the unsorted part of the list have been inserted into the sorted part of the list, the head and tail pointers of the linked list are updated to reflect the new order of the nodes in the list.
+
+
+
+Constraints:
+
+The linked list can contain duplicates.
+
+The method should be implemented in the LinkedList class.
+
+The method should not use any additional data structures to sort the linked list.
+
+*** Solution Explanation ***
+def insertion_sort(self):
+        if self.length < 2:
+            return
+        
+        sorted_list_head = self.head
+        unsorted_list_head = self.head.next
+        sorted_list_head.next = None
+        
+        while unsorted_list_head is not None:
+            current = unsorted_list_head
+            unsorted_list_head = unsorted_list_head.next
+            
+            if current.value < sorted_list_head.value:
+                current.next = sorted_list_head
+                sorted_list_head = current
+            else:
+                search_pointer = sorted_list_head
+                while search_pointer.next is not None and current.value > search_pointer.next.value:
+                    search_pointer = search_pointer.next
+                current.next = search_pointer.next
+                search_pointer.next = current
+        
+        self.head = sorted_list_head
+        temp = self.head
+        while temp.next is not None:
+            temp = temp.next
+        self.tail = temp
+
+
+
+
+This code implements the insertion sort algorithm to sort the nodes in a singly linked list in ascending order.
+
+Here's how it works:
+
+
+
+First, the function checks if the length of the linked list is less than 2. If it is, then the list is already sorted, and the function returns.
+
+Next, the function sets the sorted_list_head pointer to the head of the linked list, and the unsorted_list_head pointer to the next node after the head.
+
+The sorted_list_head pointer is then disconnected from the rest of the list by setting its next attribute to None.
+
+The function enters a loop where it iterates through each remaining node in the unsorted part of the list. For each node:
+
+The node is temporarily saved in the current variable, and the unsorted_list_head pointer is moved to the next node.
+
+If the current node is smaller than the first node in the sorted part of the list (i.e., the sorted_list_head node), then the current node becomes the new sorted_list_head node.
+
+Otherwise, the function searches through the sorted part of the list to find the correct position to insert the current node. The search is done using the search_pointer variable, which initially points to the sorted_list_head node. The search_pointer variable is moved along the sorted part of the list until it reaches the last node that is smaller than the current node, or until it reaches the end of the sorted part of the list. Once the correct position is found, the current node is inserted into the sorted part of the list.
+
+Finally, the head and tail attributes of the linked list are updated to reflect the new order of the nodes in the list. This is done by setting the head attribute to the new sorted_list_head node, and by iterating through the list to find the new tail node.
+
+
+
+
+
+Code with inline comments:
+
+
+
+def insertion_sort(self):
+    # Check if the length of the list is less than 2
+    if self.length < 2:
+        return
+    
+    # Set the pointer to the first element of the sorted list
+    sorted_list_head = self.head
+    
+    # Set the pointer to the second element of the list
+    unsorted_list_head = self.head.next
+    
+    # Remove the first element from the sorted list
+    sorted_list_head.next = None
+    
+    # Iterate through the unsorted list
+    while unsorted_list_head is not None:
+        # Save the current element
+        current = unsorted_list_head
+        
+        # Move the pointer to the next element in the unsorted list
+        unsorted_list_head = unsorted_list_head.next
+        
+        # Insert the current element into the sorted list
+        if current.value < sorted_list_head.value:
+            # If the current element is smaller than the first element 
+            # in the sorted list, it becomes the new first element
+            current.next = sorted_list_head
+            sorted_list_head = current
+        else:
+            # Otherwise, search for the appropriate position to insert the current element
+            search_pointer = sorted_list_head
+            while search_pointer.next is not None and current.value > search_pointer.next.value:
+                search_pointer = search_pointer.next
+            current.next = search_pointer.next
+            search_pointer.next = current
+    
+    # Update the head and tail of the list
+    self.head = sorted_list_head
+    temp = self.head
+    while temp.next is not None:
+        temp = temp.next
+    self.tail = temp
+
+
+*** OUTPUT ***
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.next = None
+        
+
+class LinkedList:
+    def __init__(self, value):
+        new_node = Node(value)
+        self.head = new_node
+        self.tail = new_node
+        self.length = 1
+
+    def print_list(self):
+        temp = self.head
+        while temp is not None:
+            print(temp.value)
+            temp = temp.next
+        
+    def append(self, value):
+        new_node = Node(value)
+        if self.head is None:
+            self.head = new_node
+            self.tail = new_node
+        else:
+            self.tail.next = new_node
+            self.tail = new_node
+        self.length += 1
+
+    # WRITE INSERTION_SORT METHOD HERE #
+    #                                  #
+    #                                  #
+    #                                  #
+    #                                  #
+    ####################################
+
+
+
+
+
+my_linked_list = LinkedList(4)
+my_linked_list.append(2)
+my_linked_list.append(6)
+my_linked_list.append(5)
+my_linked_list.append(1)
+my_linked_list.append(3)
+
+print("Linked List Before Sort:")
+my_linked_list.print_list()
+
+my_linked_list.insertion_sort()
+
+print("\nSorted Linked List:")
+my_linked_list.print_list()
+
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    Linked List Before Sort:
+    4
+    2
+    6
+    5
+    1
+    3
+
+    Sorted Linked List:
+    1
+    2
+    3
+    4
+    5
+    6
+
+"""
+
+
+
+
+
+Instructions: 
+Merge Two Sorted LL (⚡Interview Question)
+Description
+
+The merge method takes in another LinkedList as an input and merges it with the current LinkedList. The elements in both lists are assumed to be in ascending order, but the input lists themselves do not need to be sorted.
+
+Parameters
+
+other_list (LinkedList): the other LinkedList to merge with the current list
+
+
+
+Return Value
+
+This method does not return a value, but it modifies the current LinkedList to contain the merged list.
+
+
+
+Example:
+
+l1 = LinkedList(1)
+l1.append(3)
+l1.append(5)
+l1.append(7)
+ 
+l2 = LinkedList(2)
+l2.append(4)
+l2.append(6)
+l2.append(8)
+ 
+l1.merge(l2)
+ 
+# The current list (l1) now contains the merged list [1, 2, 3, 4, 5, 6, 7, 8]
+
+
+Details
+
+The merge method works as follows:
+
+It gets the head node of the other linked list (other_list.head) and sets it to a local variable called other_head.
+
+It creates a new node called dummy with a value of 0, which will serve as the head of the merged linked list.
+
+It creates a new node called current and sets it equal to `
+
+*** Solution Explanation ***
+def merge(self, other_list):
+        other_head = other_list.head
+        dummy = Node(0)
+        current = dummy
+ 
+        while self.head is not None and other_head is not None:
+            if self.head.value < other_head.value:
+                current.next = self.head
+                self.head = self.head.next
+            else:
+                current.next = other_head
+                other_head = other_head.next
+            current = current.next
+ 
+        if self.head is not None:
+            current.next = self.head
+        else:
+            current.next = other_head
+            self.tail = other_list.tail
+ 
+        self.head = dummy.next
+        self.length += other_list.length
+
+
+
+
+This code defines a method called merge that can be used on a LinkedList object to merge it with another LinkedList object (other_list). The method follows the merge sort algorithm to combine the two lists.
+
+Here's how it works:
+
+The method starts by getting the head node of the other_list and creating a dummy node to hold the merged list.
+
+A current node is created to keep track of the position in the merged list.
+
+A while loop is used to compare the values of the first nodes in both lists. The smaller value is added to the current node, and the respective head node is moved to the next position.
+
+Steps 3 is repeated until one of the lists is empty.
+
+If the first list still has nodes left, they are added to the current node.
+
+If the second list still has nodes left, they are added to the current node.
+
+The head of the merged list is set to the next node after the dummy node, and the length of the list is updated.
+
+
+
+Note that this method assumes that both LinkedList objects are already sorted in ascending order. If not, the merge method could produce an incorrectly sorted merged list.
+
+
+
+
+
+Code with inline comments:
+
+
+
+# Method to merge a linked list with another linked list
+def merge(self, other_list):
+    
+    # Get the head node of the other linked list
+    other_head = other_list.head
+    
+    # Create a dummy node to hold the merged list
+    dummy = Node(0)
+    
+    # Set the current node to the dummy node
+    current = dummy
+ 
+    # Loop while both lists still have nodes
+    while self.head is not None and other_head is not None:
+        
+        # Compare the values of the first nodes in each list
+        if self.head.value < other_head.value:
+            # If the value in the first list is smaller,
+            # add it to the current node and move to the next node in the first list
+            current.next = self.head
+            self.head = self.head.next
+        else:
+            # Otherwise, add the value from the second list
+            # and move to the next node in the second list
+            current.next = other_head
+            other_head = other_head.next
+            
+        # Move the current node to the next position
+        current = current.next
+ 
+    # If the first list still has nodes left, add them to the current node
+    if self.head is not None:
+        current.next = self.head
+    else:
+        # If the second list still has nodes left, add them to the current node
+        current.next = other_head
+        # Update the tail of the merged list to be the tail of the second list
+        self.tail = other_list.tail
+ 
+    # Set the head of the merged list to the next node after the dummy node
+    self.head = dummy.next
+    
+    # Update the length of the merged list
+    self.length += other_list.length
+
+*** OUTPUT ***
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.next = None
+        
+
+class LinkedList:
+    def __init__(self, value):
+        new_node = Node(value)
+        self.head = new_node
+        self.tail = new_node
+        self.length = 1
+
+    def print_list(self):
+        temp = self.head
+        while temp is not None:
+            print(temp.value)
+            temp = temp.next
+        
+    def append(self, value):
+        new_node = Node(value)
+        if self.head is None:
+            self.head = new_node
+            self.tail = new_node
+        else:
+            self.tail.next = new_node
+            self.tail = new_node
+        self.length += 1
+
+    # WRITE MERGE METHOD HERE #
+    #                         #
+    #                         #
+    #                         #
+    #                         #
+    ###########################
+    
+
+
+l1 = LinkedList(1)
+l1.append(3)
+l1.append(5)
+l1.append(7)
+
+
+l2 = LinkedList(2)
+l2.append(4)
+l2.append(6)
+l2.append(8)
+
+l1.merge(l2)
+
+l1.print_list()
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    1 
+    2 
+    3 
+    4 
+    5 
+    6 
+    7
+    8
+
+"""
+
+
+
+Instructions: 
+BST: Validate BST (⚡Interview Question)
+You are tasked with writing a method called is_valid_bst in the BinarySearchTree class that checks whether a binary search tree is a valid binary search tree.
+
+Your method should use the dfs_in_order method to get the node values of the binary search tree in ascending order, and then check whether each node value is greater than the previous node value.
+
+If the node values are not sorted in ascending order, the method should return False, indicating that the binary search tree is not valid.
+
+If all node values are sorted in ascending order, the method should return True, indicating that the binary search tree is a valid binary search tree.
+
+*** Solution Explanation ***
+def is_valid_bst(self):
+        node_values = self.dfs_in_order()
+        for i in range(1, len(node_values)):
+            if node_values[i] <= node_values[i-1]:
+                return False
+        return True
+
+
+
+
+The is_valid_bst method is a method of the BinarySearchTree class that checks whether the binary search tree is a valid binary search tree.
+
+The method uses the dfs_in_order method to get the node values of the binary search tree in ascending order. It then iterates through the node values using a for loop and checks whether each node value is greater than the previous node value. If the node values are not sorted in ascending order, the method returns False, indicating that the binary search tree is not valid. If all node values are sorted in ascending order, the method returns True, indicating that the binary search tree is a valid binary search tree.
+
+Note that this implementation of is_valid_bst assumes that the node values in the binary search tree are unique. If the binary search tree contains duplicate node values, the is_valid_bst method may return incorrect results.
+
+
+Code with inline comments:
+
+
+
+def is_valid_bst(self):
+    # Get node values of the binary search tree in ascending order
+    node_values = self.dfs_in_order()
+    # Iterate through the node values using a for loop
+    for i in range(1, len(node_values)):
+        # Check if each node value is greater than the previous node value
+        if node_values[i] <= node_values[i-1]:
+            # If node values are not sorted in ascending order, the binary
+            # search tree is not valid, so return False
+            return False
+    # If all node values are sorted in ascending order, the binary search tree
+    # is a valid binary search tree, so return True
+    return True
+
+
+*** OUTPUT ***
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+        
+
+class BinarySearchTree:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, value):
+        new_node = Node(value)
+        if self.root is None:
+            self.root = new_node
+            return True
+        temp = self.root
+        while (True):
+            if new_node.value == temp.value:
+                return False
+            if new_node.value < temp.value:
+                if temp.left is None:
+                    temp.left = new_node
+                    return True
+                temp = temp.left
+            else: 
+                if temp.right is None:
+                    temp.right = new_node
+                    return True
+                temp = temp.right
+
+    def dfs_in_order(self):
+        results = []
+        def traverse(current_node):
+            if current_node.left is not None:
+                traverse(current_node.left)
+            results.append(current_node.value) 
+            if current_node.right is not None:
+                traverse(current_node.right)          
+        traverse(self.root)
+        return results
+        
+    # WRITE IS_VALID_BST METHOD HERE #
+    #                                #
+    #                                #
+    #                                #
+    #                                #
+    ##################################
+
+
+
+my_tree = BinarySearchTree()
+my_tree.insert(47)
+my_tree.insert(21)
+my_tree.insert(76)
+my_tree.insert(18)
+my_tree.insert(27)
+my_tree.insert(52)
+my_tree.insert(82)
+
+print("BST is valid:")
+print(my_tree.is_valid_bst())
+
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    BST is valid:
+    True
+
+ """
+ 
+ 
+ 
+ 
+ Instructions: 
+BST: Kth Smallest Node
+Given a binary search tree, find the kth smallest element in the tree. For example, if the tree contains the elements [1, 2, 3, 4, 5], the 3rd smallest element would be 3.
+
+The solution to this problem usually involves traversing the tree in-order (left, root, right) and keeping track of the number of nodes visited until you find the kth smallest element. There are two main approaches to doing this:
+
+Iterative approach using a stack: This approach involves maintaining a stack of nodes that still need to be visited, starting with the leftmost node. At each step, you pop a node off the stack, decrement the kth smallest counter, and check whether you have found the kth smallest element. If you have not, you continue traversing the tree by moving to the right child of the current node.
+
+Recursive approach: This approach involves recursively traversing the tree in-order and keeping track of the number of nodes visited until you find the kth smallest element. You can use a helper function that takes a node and a value of k as input, and recursively calls itself on the left and right children of the node until it finds the kth smallest element.
+
+Both of these approaches have their own advantages and disadvantages, and the best approach to use may depend on the specific problem constraints and the interviewer's preferences.
+
+*** Solution Explanation ***
+def kth_smallest(self, k):
+        stack = []
+        node = self.root
+        
+        while stack or node:
+            while node:
+                stack.append(node)
+                node = node.left
+            
+            node = stack.pop()
+            k -= 1
+            if k == 0:
+                return node.value
+            
+            node = node.right
+            
+        return None
+
+
+The kth_smallest method is a method of the BinarySearchTree class that finds the kth smallest element in a binary search tree. It takes one argument, k, which is the index of the element you want to find (starting from 1 for the smallest element).
+
+Here's how the method works:
+
+It initializes a stack to hold nodes and sets a temporary node to the root of the tree.
+
+It uses a while loop to traverse the tree in-order (left, root, right) and add each node to the stack.
+
+It pops a node from the stack and decrements the k counter.
+
+If k is equal to 0, it returns the value of the node, which is the kth smallest element.
+
+If k is not equal to 0, it moves to the right child of the node and continues traversing the tree.
+
+If it reaches the end of the tree without finding the kth smallest element, it returns None.
+
+The in-order traversal guarantees that the elements will be visited in ascending order, so popping elements off the stack will give you the kth smallest element. The method uses a stack to keep track of the nodes that still need to be visited, starting with the leftmost node. When it pops a node off the stack, it decrements the k counter and checks whether it has found the kth smallest element. If it has, it returns the value of the node. If it has not, it continues traversing the tree by moving to the right child of the current node.
+
+Overall, the kth_smallest method is an efficient way to find the kth smallest element in a binary search tree, with a time complexity of O(h + k), where h is the height of the tree.
+
+
+
+
+
+Code with inline comments:
+
+   
+
+    def kth_smallest(self, k):
+        # create a stack to hold nodes
+        stack = []    
+        # start at the root of the tree      
+        temp = self.root    
+        
+        while stack or temp:
+            # traverse to the leftmost node
+            while temp: 
+                # add the node to the stack                
+                stack.append(temp)      
+                temp = temp.left
+            
+            # pop the last node added to the stack
+            temp = stack.pop()           
+            k -= 1
+            # if kth smallest element is found, return the value
+            if k == 0:                  
+                return temp.value
+            
+            # move to the right child of the node
+            temp = temp.right           
+            
+        # if k is greater than the number of nodes in the tree, return None
+        return None                      
+
+
+Recursive solution:
+
+   
+
+    def kth_smallest(self, k):
+        self.kth_smallest_count = 0
+        return self.kth_smallest_helper(self.root, k)
+ 
+    def kth_smallest_helper(self, node, k):
+        if node is None:
+            return None
+ 
+        left_result = self.kth_smallest_helper(node.left, k)
+        if left_result is not None:
+            return left_result
+ 
+        self.kth_smallest_count += 1
+        if self.kth_smallest_count == k:
+            return node.value
+ 
+        right_result = self.kth_smallest_helper(node.right, k)
+        if right_result is not None:
+            return right_result
+ 
+        return None
+
+
+Here's how the recursive method works:
+
+It initializes a counter for the number of nodes visited, starting from 0.
+
+It calls the kth_smallest_helper function with the root node and the value of k.
+
+The helper function first checks whether the current node is None. If it is, it returns None.
+
+The helper function recursively calls itself on the left child of the current node and stores the result in left_result. If left_result is not None, it returns left_result.
+
+If left_result is None, the helper function increments the kth_smallest_count counter and checks whether it has reached the value of k. If it has, it returns the value of the current node.
+
+The helper function then recursively calls itself on the right child of the current node and stores the result in right_result. If right_result is not None, it returns right_result.
+
+If right_result is None, the helper function returns None.
+
+Overall, the recursive implementation of the in-order traversal is simpler and easier to understand than the iterative implementation using a stack. However, it may be less efficient for very large trees because of the function call overhead.
+
+
+
+Recursive code with inline comments:
+
+
+
+    def kth_smallest(self, k):
+        # initialize the number of nodes visited to 0
+        self.kth_smallest_count = 0
+        # call the helper function with the root node and k
+        return self.kth_smallest_helper(self.root, k)
+ 
+    def kth_smallest_helper(self, node, k):
+        if node is None:
+            # if the current node is None, return None
+            return None
+ 
+        # recursively call the helper function on the left child of the node and store the result in left_result
+        left_result = self.kth_smallest_helper(node.left, k)
+        if left_result is not None:
+            # if left_result is not None, return it
+            return left_result
+ 
+        # increment the number of nodes visited by 1
+        self.kth_smallest_count += 1
+        if self.kth_smallest_count == k:
+            # if the kth smallest element is found, return the value of the current node
+            return node.value
+ 
+        # recursively call the helper function on the right child of the node and store the result in right_result
+        right_result = self.kth_smallest_helper(node.right, k)
+        if right_result is not None:
+            # if right_result is not None, return it
+            return right_result
+ 
+        # if the kth smallest element is not found, return None
+        return None
+
+*** OUTPUT ***
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+        
+
+class BinarySearchTree:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, value):
+        new_node = Node(value)
+        if self.root is None:
+            self.root = new_node
+            return True
+        temp = self.root
+        while (True):
+            if new_node.value == temp.value:
+                return False
+            if new_node.value < temp.value:
+                if temp.left is None:
+                    temp.left = new_node
+                    return True
+                temp = temp.left
+            else: 
+                if temp.right is None:
+                    temp.right = new_node
+                    return True
+                temp = temp.right
+
+    # WRITE KTH_SMALLEST METHOD HERE #
+    #                                #
+    #                                #
+    #                                #
+    #                                #
+    ##################################
+
+
+
+bst = BinarySearchTree()
+
+bst.insert(5)
+bst.insert(3)
+bst.insert(7)
+bst.insert(2)
+bst.insert(4)
+bst.insert(6)
+bst.insert(8)
+
+print(bst.kth_smallest(1))  # Expected output: 2
+print(bst.kth_smallest(3))  # Expected output: 4
+print(bst.kth_smallest(6))  # Expected output: 7
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    2
+    4
+    7
+
+ """
+ 
+ 
+ 
+ 
+ 
+ Instructions: 
+List: Find Max Min (⚡Interview Question)
+Write a Python function that takes a list of integers as input and returns a tuple containing the maximum and minimum values in the list.
+
+The function should have the following signature:
+
+def find_max_min(myList):
+
+
+Where myList is the list of integers to search for the maximum and minimum values.
+
+The function should traverse the list and keep track of the current maximum and minimum values. It should then return these values as a tuple, with the maximum value as the first element and the minimum value as the second element.
+
+For example, if the input list is [5, 3, 8, 1, 6, 9], the function should return (9, 1) since 9 is the maximum value and 1 is the minimum value.
+
+*** Solution Explanation ***
+def find_max_min(myList):
+    maximum = minimum = myList[0]
+    for num in myList:
+        if num > maximum:
+            maximum = num
+        elif num < minimum:
+            minimum = num
+    return maximum, minimum
+
+
+
+
+This code defines a function called find_max_min, which takes a single argument, myList. The function is designed to find the maximum and minimum values in the given list and return them as a tuple (maximum, minimum). Here's an explanation of the code:
+
+
+
+maximum = minimum = myList[0]: This line initializes both the maximum and minimum variables with the value of the first element in the list. This is done as a starting point for comparison with the rest of the elements in the list.
+
+for num in myList:: This line starts a for loop, iterating through each element (num) in the list myList.
+
+if num > maximum:: This line checks if the current element (num) is greater than the current maximum value. If this condition is true, it means we found a new maximum value in the list.
+
+maximum = num: If the condition in the previous line is true, this line assigns the current element's value to the maximum variable, updating it to the new maximum value.
+
+elif num < minimum:: If the current element is not greater than the current maximum, this line checks if the current element is less than the current minimum value. If this condition is true, it means we found a new minimum value in the list.
+
+minimum = num: If the condition in the previous line is true, this line assigns the current element's value to the minimum variable, updating it to the new minimum value.
+
+return maximum, minimum: This line returns a tuple containing the maximum and minimum values found in the list.
+
+
+
+
+
+Code with inline comments:
+
+
+
+def find_max_min(myList):
+    # Initialize the maximum and minimum variables 
+    # to the first element of the list
+    maximum = minimum = myList[0]
+    
+    # Traverse the list and update the 
+    # maximum and minimum variables
+    for num in myList:
+        if num > maximum:
+            maximum = num
+        elif num < minimum:
+            minimum = num
+    
+    # Return the maximum and minimum variables
+    return maximum, minimum
+
+*** OUTPUT ***
+# WRITE FIND_MAX_MIN FUNCTION HERE #
+#                                  #
+#                                  #
+#                                  #
+#                                  #
+####################################
+    
+
+
+print( find_max_min([5, 3, 8, 1, 6, 9]) )
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    (9, 1)
+    
+"""
+
+
+
+
+Instructions: 
+List: Find Longest String (⚡Interview Question)
+Write a Python function called find_longest_string that takes a list of strings as an input and returns the longest string in the list. The function should iterate through each string in the list, check its length, and keep track of the longest string seen so far. Once it has looped through all the strings, the function should return the longest string found.
+
+
+
+Example:
+
+string_list = ['apple', 'banana', 'kiwi', 'pear']
+longest = find_longest_string(string_list)
+print(longest)  # expected output: 'banana'
+
+*** Solution Explanation ***
+def find_longest_string(string_list):
+    longest_string = ""
+    for string in string_list:
+        if len(string) > len(longest_string):
+            longest_string = string
+    return longest_string
+
+
+
+
+This code defines a function called find_longest_string that takes a single argument string_list, which is expected to be a list of strings.
+
+The function initializes a variable called longest_string to an empty string. Then, it iterates over each string in string_list using a for loop. For each string, the function checks if its length is greater than the length of longest_string using the len function. If the length of the current string is greater than the length of longest_string, then the value of longest_string is updated to be the current string.
+
+After iterating over all the strings in string_list, the function returns longest_string, which will be the string in the list with the greatest length.
+
+
+
+
+
+Code with inline comments:
+
+
+
+def find_longest_string(string_list):
+    # Initialize the variable to store the longest string to an empty string
+    longest_string = ""
+    # Loop through each string in the list of strings
+    for string in string_list:
+        # Check if the length of the current string is greater than the
+        # length of the current longest string
+        if len(string) > len(longest_string):
+            # If so, update the longest string to be the current string
+            longest_string = string
+    # Return the longest string
+    return longest_string
+
+
+*** OUTPUT ***
+# WRITE FIND_LONGEST_STRING FUNCTION HERE #
+#                                         #
+#                                         #
+#                                         #
+#                                         #
+###########################################
+    
+
+
+string_list = ['apple', 'banana', 'kiwi', 'pear']
+longest = find_longest_string(string_list)
+print(longest)  
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    banana
+    
+"""
+
+
+Instructions: 
+List: Remove Duplicates (⚡Interview Question)
+Given a sorted list of integers, rearrange the list in-place such that all unique elements appear at the beginning of the list, followed by the duplicate elements. Your function should return the new length of the list containing only unique elements. Note that you should not create a new list or use any additional data structures to solve this problem. The original list should be modified in-place.
+
+Constraints:
+
+
+
+The input list is sorted in non-decreasing order.
+
+The input list may contain duplicates.
+
+The function should have a time complexity of O(n), where n is the length of the input list.
+
+The function should have a space complexity of O(1), i.e., it should not use any additional data structures or create new lists.
+
+
+
+Example:
+
+Input: nums = [0, 0, 1, 1, 1, 2, 2, 3, 3, 4] Function call: new_length = remove_duplicates(nums) Output: new_length = 5 Modified list: nums = [0, 1, 2, 3, 4, 2, 2, 3, 3, 4] (first 5 elements are unique)
+
+Explanation: The function modifies the original list nums in-place, moving unique elements to the beginning of the list, followed by duplicate elements. The new length returned by the function is 5, indicating that there are 5 unique elements in the list. The first 5 elements of the modified list nums are the unique elements [0, 1, 2, 3, 4].
+
+
+
+This code:
+
+
+
+nums = [0, 0, 1, 1, 1, 2, 2, 3, 3, 4]
+new_length = remove_duplicates(nums)
+print("New length:", new_length)
+print("Unique values in list:", nums[:new_length])
+
+
+Should Output:
+
+
+
+New length: 5
+Unique values in list: [0, 1, 2, 3, 4]
+
+*** Solution Explanation ***
+def remove_duplicates(nums):
+    if not nums:
+        return 0
+ 
+    write_pointer = 1
+ 
+    for read_pointer in range(1, len(nums)):
+        if nums[read_pointer] != nums[read_pointer - 1]:
+            nums[write_pointer] = nums[read_pointer]
+            write_pointer += 1
+ 
+    return write_pointer
+
+
+
+
+This code defines a function remove_duplicates that takes a sorted list of integers called nums as input and rearranges it in-place to move unique elements to the beginning, followed by duplicate elements. The function returns the new length of the list containing only unique elements.
+
+Here's a step-by-step explanation of the code:
+
+
+
+if not nums: return 0: This line checks if the input list nums is empty. If it is, the function returns 0, as there are no unique elements in an empty list.
+
+write_pointer = 1: This line initializes the write_pointer variable with a value of 1. The write_pointer will be used to keep track of the position where the next unique element should be written in the list.
+
+for read_pointer in range(1, len(nums)):: This line starts a for loop that iterates through the list from index 1 to the end of the list. The loop uses the read_pointer variable to track the current position in the list.
+
+if nums[read_pointer] != nums[read_pointer - 1]:: This line checks if the current element at the read_pointer index is different from the previous element. If it is, it means that the current element is unique and should be moved to the position indicated by the write_pointer.
+
+nums[write_pointer] = nums[read_pointer]: This line moves the unique element at the read_pointer index to the position indicated by the write_pointer.
+
+write_pointer += 1: This line increments the write_pointer by 1 to prepare for the next unique element.
+
+return write_pointer: After the loop finishes, the write_pointer variable holds the new length of the list containing unique elements. The function returns this value.
+
+
+
+By using the write_pointer and read_pointer variables, the function efficiently modifies the original list in-place without using any additional data structures or creating new lists. It moves unique elements to the beginning of the list and returns the new length of the list containing only unique elements.
+
+
+
+
+
+Code with inline comments:
+
+
+
+def remove_duplicates(nums):
+    # Return 0 if input list is empty
+    if not nums:
+        return 0
+ 
+    # Initialize write_pointer at index 1
+    write_pointer = 1
+ 
+    # Loop through list starting from index 1
+    for read_pointer in range(1, len(nums)):
+        # Check if current element is unique
+        if nums[read_pointer] != nums[read_pointer - 1]:
+            # Move unique element to write_pointer
+            nums[write_pointer] = nums[read_pointer]
+            # Increment write_pointer for next unique element
+            write_pointer += 1
+ 
+    # Return new length of list with unique elements
+    return write_pointer
+
+*** OUTPUT ***
+# WRITE REMOVE_DUPLICATES FUNCTION HERE #
+#                                       #
+#                                       #
+#                                       #
+#                                       #
+#########################################
+    
+    
+
+nums = [0, 0, 1, 1, 1, 2, 2, 3, 3, 4]
+new_length = remove_duplicates(nums)
+print("New length:", new_length)
+print("Unique values in list:", nums[:new_length])
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    New length: 5
+    Unique values in list: [0, 1, 2, 3, 4]
+
+"""
+
+
+
+
+Instructions: 
+List: Max Profit (⚡Interview Question)
+You are given a list of integers representing stock prices for a certain company over a period of time, where each element in the list corresponds to the stock price for a specific day.
+
+You are allowed to buy one share of the stock on one day and sell it on a later day.
+
+Your task is to write a function called max_profit that takes the list of stock prices as input and returns the maximum profit you can make by buying and selling at the right time.
+
+Note that you must buy the stock before selling it, and you are allowed to make only one transaction (buy once and sell once).
+
+Constraints:
+
+
+
+Each element of the input list is a positive integer representing the stock price for a specific day.
+
+
+
+Function signature: def max_profit(prices):
+
+Example:
+
+Input: prices = [7, 1, 5, 3, 6, 4]
+Function call: profit = max_profit(prices)
+Output: profit = 5
+
+Explanation: The maximum profit can be achieved by buying the stock on day 2 (price 1) and selling it on day 5 (price 6), resulting in a profit of 6 - 1 = 5.
+
+*** Solution Explanation ***
+def max_profit(prices):
+    min_price = float('inf')
+    max_profit = 0
+ 
+    for price in prices:
+        min_price = min(min_price, price)
+        profit = price - min_price
+        max_profit = max(max_profit, profit)
+ 
+    return max_profit
+
+
+
+
+This code defines a function max_profit that takes a list of stock prices as input and returns the maximum profit that can be made by buying and selling the stock at the right time, with one transaction allowed.
+
+Here's a step-by-step explanation of the code:
+
+
+
+min_price = float('inf'): This line initializes the min_price variable to positive infinity. This variable is used to store the minimum stock price seen so far while iterating through the list of prices.
+
+max_profit = 0: This line initializes the max_profit variable to 0. This variable is used to store the maximum profit that can be made with a single transaction.
+
+for price in prices:: This line starts a for loop that iterates through the list of stock prices.
+
+min_price = min(min_price, price): This line updates the min_price variable with the minimum value between the current min_price and the current stock price in the iteration. This ensures that min_price always holds the minimum stock price seen so far.
+
+profit = price - min_price: This line calculates the profit that could be made by buying the stock at the minimum price seen so far and selling it at the current price in the iteration.
+
+max_profit = max(max_profit, profit): This line updates the max_profit variable with the maximum value between the current max_profit and the calculated profit. This ensures that max_profit always holds the maximum possible profit that can be made with a single transaction.
+
+return max_profit: After the loop finishes, the max_profit variable contains the maximum profit that can be made with a single transaction. The function returns this value.
+
+
+
+The function works by iterating through the list of prices and keeping track of the minimum price found so far. For each price in the list, it calculates the profit that could be made by buying at the minimum price and selling at the current price, and updates the maximum profit accordingly. Finally, the function returns the maximum profit.
+
+
+
+
+
+Code with inline comments:
+
+
+
+def max_profit(prices):
+    # Initialize min_price to positive infinity
+    min_price = float('inf')
+    # Initialize max_profit to 0
+    max_profit = 0
+ 
+    # Iterate through the list of stock prices
+    for price in prices:
+        # Update min_price with the lowest price so far
+        min_price = min(min_price, price)
+        # Calculate profit by selling at the current price
+        profit = price - min_price
+        # Update max_profit with the highest profit so far
+        max_profit = max(max_profit, profit)
+ 
+    # Return the maximum profit after iterating
+    return max_profit
+
+*** OUTPUT ***
+# WRITE MAX_PROFIT FUNCTION HERE #
+#                                #
+#                                #
+#                                #
+#                                #
+##################################
+    
+    
+
+prices = [7, 1, 5, 3, 6, 4]
+profit = max_profit(prices)
+print("Maximum profit:", profit)
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    Maximum profit: 5
+
+
+"""
+
+
+
+
+
+Instructions: 
+List: Rotate (⚡Interview Question)
+You are given a list of n integers and a non-negative integer k.
+
+Your task is to write a function called rotate that takes the list of integers and an integer k as input and rotates the list to the right by k steps.
+
+The function should modify the input list in-place, and you should not return anything.
+
+Constraints:
+
+Each element of the input list is an integer.
+
+The integer k is non-negative.
+
+
+
+Function signature: def rotate(nums, k):
+
+Example:
+
+Input: nums = [1, 2, 3, 4, 5, 6, 7], k = 3
+Function call: rotate(nums, k)
+Output: nums = [5, 6, 7, 1, 2, 3, 4]
+
+
+Explanation: The list has been rotated to the right by 3 steps:
+
+
+
+[7, 1, 2, 3, 4, 5, 6]
+
+[6, 7, 1, 2, 3, 4, 5]
+
+[5, 6, 7, 1, 2, 3, 4]
+
+*** Solution Explanation ***
+def rotate(nums, k):
+    k = k % len(nums)
+    nums[:] = nums[-k:] + nums[:-k]
+
+
+
+
+This code defines a function rotate that takes a list of integers nums and a non-negative integer k as input and rotates the list to the right by k steps. The function modifies the input list in-place.
+
+Here's a step-by-step explanation of the code:
+
+
+
+k = k % len(nums): This line takes the modulus of k with the length of the array. This is done to handle cases where k is greater than or equal to the length of the array. By doing this, we ensure that we only rotate the list by the necessary number of steps, effectively reducing unnecessary rotations.
+
+nums[:] = nums[-k:] + nums[:-k]: This line rotates the list in-place by slicing it into two parts and concatenating them in reverse order. The expression nums[-k:] represents the last k elements of the list (the part that will be moved to the beginning of the rotated list), and the expression nums[:-k] represents the first n - k elements of the list (the part that will be moved to the end of the rotated list). By concatenating these two slices, we create a new list that represents the rotated version of the input list. The assignment nums[:] = modifies the input list in-place with the rotated list.
+
+
+
+The function works by first calculating the effective number of steps to rotate the list (using the modulus operation) and then creating a new list with the elements rearranged in the rotated order. Finally, the function updates the input list in-place with the rotated list.
+
+
+
+
+
+Code with inline comments:
+
+
+
+def rotate(nums, k):
+    # Calculate the effective number of steps to rotate
+    k = k % len(nums)
+    # Rearrange the elements in the rotated order
+    nums[:] = nums[-k:] + nums[:-k]
+
+
+*** OUTPUT ***
+# WRITE ROTATE FUNCTION HERE #
+#                            #
+#                            #
+#                            #
+#                            #
+##############################
+    
+
+
+nums = [1, 2, 3, 4, 5, 6, 7]
+k = 3
+rotate(nums, k)
+print("Rotated array:", nums)
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    Rotated array: [5, 6, 7, 1, 2, 3, 4]
+
+"""
+
+
+
+
+
+
+
+
