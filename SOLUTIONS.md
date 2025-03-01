@@ -398,4 +398,41 @@
         self.head.value, self.tail.value = self.tail.value, self.head.value
 
   ```
-   
+7. You are given a class MyQueue which implements a queue using two stacks. Your task is to implement the enqueue method which should add an element to the back of the queue.
+
+- To achieve this, you can use the two stacks stack1 and stack2. Initially, all elements are stored in stack1 and stack2 is empty. In order to add an element to the back of the queue, you need to first transfer all elements from stack1 to stack2 using a loop that pops each element from stack1 and pushes it onto stack2.
+
+- Once all elements have been transferred to stack2, push the new element onto stack1. Finally, transfer all elements from stack2 back to stack1 in the same way as before, so that the queue maintains its ordering.
+
+  ```python
+  def enqueue_using_stacks(self, value):
+        """
+        Enqueues a value into a queue implemented using two stacks.
+        This method implements queue's enqueue operation using two stacks (stack1 and stack2).
+        The implementation follows these steps:
+        1. Transfers all elements from stack1 to stack2
+        2. Pushes the new value to the now-empty stack1
+        3. Transfers all elements back from stack2 to stack1
+        This ensures that the oldest elements remain at the top of stack1,
+        maintaining FIFO (First In First Out) queue behavior.
+        Args:
+            value: The value to be added to the queue
+        Time Complexity: O(n) where n is the number of elements in the queue
+        Space Complexity: O(n) for storing elements in the stacks
+        """
+
+        # All elements are stored in stack1
+        # All elements are transferred to stack2
+        while self.stack1.height > 0:
+            node = self.stack1.pop()
+            self.stack2.push(node.value)
+
+        # Append new element to the empty stack1
+        self.stack1.push(value)
+
+        # All elements are now stored in stack2
+        # All elements are transferred back to stack1
+        while self.stack2.height > 0:
+            node = self.stack2.pop()
+            self.stack1.push(node.value)
+  ```
