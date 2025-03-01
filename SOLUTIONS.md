@@ -436,3 +436,12 @@
             node = self.stack2.pop()
             self.stack1.push(node.value)
   ```
+
+8. You have been tasked with implementing a queue data structure using two stacks in Python, and you need to write the dequeue method.The dequeue method should remove and return the first element in the queue.
+
+  ```python
+  def dequeue(self):
+        if self.is_empty():
+            return None
+        return self.stack1.pop()
+  ```
