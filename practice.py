@@ -1,22 +1,24 @@
-def common_in_list(list1: list, list2: list):
-    for item1 in list1:
-        if item1 in list2:
-            return True
-    return False
+# Method 1
+def duplicates(arr: list):
+    my_dict = {}
+    for item in arr:
+        if item in my_dict.keys():
+            my_dict[item] = True
+        else:
+            my_dict[item] = False
+    return [key for key, val in my_dict.items() if val == True]
 
 
-def common_in_arr(arr1: list, arr2: list):
-    # total time complexity: O(m+n)
-    common_dict = {}
-    for item1 in arr1:  # runs len(arr1) times i.e O(m)
-        common_dict[item1] = False
-
-    for item2 in arr2:  # runs len(arr2) times i.e O(n)
-        if item2 in common_dict.keys():  # constat lookup i.e O(1)
-            return True
-    return False
+# Method 2
+def duplicates_again(arr: list[int]):
+    # arr = [1,2,3,3,4]
+    # nums_count = {1:1, 2:1, 3: 2, 4:1}
+    nums_count = {}
+    for item in arr:
+        nums_count[item] = nums_count.get(item, 0) + 1
+    return [key for key, val in nums_count.items() if val > 1]
 
 
-list1 = [1, 2, 9, 15, 21]
-list2 = [2, 3, 5, 7, 11]
-print(common_in_list(list1, list2))
+list1 = [1, 2, 3, 2, 9, 9, 15, 21, 15]
+arr = [1, 2, 3, 4, 5]
+print(duplicates_again(list1))
