@@ -1,57 +1,22 @@
-class MyQueue:
-    def __init__(self):
-        self.stack1 = []
-        self.stack2 = []
-
-    def enqueue(self, value):
-        # Transfer all elements from stack1 to stack2
-        while len(self.stack1) > 0:
-            self.stack2.append(self.stack1.pop())
-
-        # Add the new element to the bottom of stack1
-        self.stack1.append(value)
-
-        # Transfer all elements back from stack2 to stack1
-        while len(self.stack2) > 0:
-            self.stack1.append(self.stack2.pop())
-
-    def dequeue(self):
-        if self.is_empty():
-            return None
-        return self.stack1.pop()
-
-    def peek(self):
-        # Note that position of front and rear is exchanged
-        if self.is_empty():
-            return None
-        return self.stack1[-1]
-
-    def print_queue(self):
-        print(self.stack1[::-1])
-
-    def is_empty(self):
-        return len(self.stack1) == 0
+def common_in_list(list1: list, list2: list):
+    for item1 in list1:
+        if item1 in list2:
+            return True
+    return False
 
 
-# Create a new queue
-q = MyQueue()
+def common_in_arr(arr1: list, arr2: list):
+    # total time complexity: O(m+n)
+    common_dict = {}
+    for item1 in arr1:  # runs len(arr1) times i.e O(m)
+        common_dict[item1] = False
+
+    for item2 in arr2:  # runs len(arr2) times i.e O(n)
+        if item2 in common_dict.keys():  # constat lookup i.e O(1)
+            return True
+    return False
 
 
-# Enqueue some values
-q.enqueue(1)
-q.enqueue(2)
-q.enqueue(3)
-
-q.print_queue()
-
-# Output the front of the queue
-print("Front of the queue:", q.peek())
-q.dequeue()
-q.dequeue()
-
-q.print_queue()
-print("Front of the queue:", q.peek())
-q.dequeue()
-
-# Check if the queue is empty
-print("Is the queue empty?", q.is_empty())
+list1 = [1, 2, 9, 15, 21]
+list2 = [2, 3, 5, 7, 11]
+print(common_in_list(list1, list2))

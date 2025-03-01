@@ -445,3 +445,19 @@
             return None
         return self.stack1.pop()
   ```
+
+9. Write a function item_in_common(list1, list2) that takes two lists as input and returns True if there is at least one common item between the two lists, False otherwise. Use a dictionary to solve the problem that creates an O(n) time complexity.
+
+  ```python
+  def common_in_list(arr1: list, arr2: list):
+    # total time complexity: O(m+n)
+    common_dict = {}
+    for item1 in arr1:  # runs len(arr1) times i.e O(m)
+        common_dict[item1] = False
+
+    for item2 in arr2:  # runs len(arr2) times i.e O(n)
+        if item2 in common_dict.keys():  # constat lookup i.e O(1)
+            return True
+    return False
+
+  ```
