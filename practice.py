@@ -1,24 +1,31 @@
-# Method 1
-def duplicates(arr: list):
-    my_dict = {}
-    for item in arr:
-        if item in my_dict.keys():
-            my_dict[item] = True
-        else:
-            my_dict[item] = False
-    return [key for key, val in my_dict.items() if val == True]
+def first_non_repeating_char(string: str):
+    """Find the first non-repeating character in a string.
+    This function takes a string input and returns the first character that appears exactly
+    once in the string. If no such character exists, returns None.
+    Args:
+        string (str): The input string to search for non-repeating characters
+    Returns:
+        str or None: The first non-repeating character if one exists, None otherwise
+    Example:
+        >>> first_non_repeating_char("abcab")
+        'c'
+        >>> first_non_repeating_char("abcabc")
+        None
+        >>> first_non_repeating_char("aabbcc")
+        None
+    """
+
+    char_counts = {}
+    for letter in string:
+        char_counts[letter] = char_counts.get(letter, 0) + 1
+
+    for char in char_counts:
+        if char_counts[char] == 1:
+            return char
+
+    return None
 
 
-# Method 2
-def duplicates_again(arr: list[int]):
-    # arr = [1,2,3,3,4]
-    # nums_count = {1:1, 2:1, 3: 2, 4:1}
-    nums_count = {}
-    for item in arr:
-        nums_count[item] = nums_count.get(item, 0) + 1
-    return [key for key, val in nums_count.items() if val > 1]
-
-
-list1 = [1, 2, 3, 2, 9, 9, 15, 21, 15]
-arr = [1, 2, 3, 4, 5]
-print(duplicates_again(list1))
+print(first_non_repeating_char("hheelloo"))  # None
+print(first_non_repeating_char("hello"))  # h
+print(first_non_repeating_char("leetcode"))  # l
