@@ -1,33 +1,61 @@
-def group_anagrams(words: list[str]):
+def two_sum(nums: list[int], target: int):
+    # Returns the list of two numbers whose sum equals the target.
+    num_map = {}
+    for num in nums:
+        complement = target - num
+        if complement in num_map:
+            return [complement, num]
+        num_map[num] = complement
+    return []
+
+
+def two_sum_indices(nums: list[int], target: int):
     """
-    Group anagrams from a list of strings.
-    This function takes a list of strings and groups anagrams together. Two strings are considered
-    anagrams if they contain the same characters with the same frequencies, regardless of order.
+    Find indices of two numbers in a list that sum up to the target value.
+    This function implements the two-sum problem using a hash map approach with O(n) time complexity.
     Args:
-        words (list[str]): A list of strings to be grouped into anagrams.
+        nums (list[int]): List of integers to search through
+        target (int): Target sum to find
     Returns:
-        list[list[str]]: A list of lists, where each inner list contains strings that are anagrams
-        of each other.
-    Example:
-        >>> group_anagrams(["eat", "tea", "tan", "ate", "nat", "bat"])
-        [['eat', 'tea', 'ate'], ['tan', 'nat'], ['bat']]
-    Time Complexity:
-        O(n * k * log(k)) where n is the number of words and k is the maximum length of a word
-        due to sorting each word.
-    Space Complexity:
-        O(n) where n is the total number of characters across all words.
+        list[int]: List containing indices of two numbers that sum to target.
+                   Returns empty list if no solution exists.
+    Examples:
+        >>> two_sum_indices([2, 7, 11, 15], 9)
+        [0, 1]
+        >>> two_sum_indices([3, 2, 4], 6)
+        [1, 2]
+        >>> two_sum_indices([3, 3], 6)
+        [0, 1]
     """
 
-    my_dict = {}
-    for word in words:
-        sorted_word = "".join(sorted(word))
-        if sorted_word in my_dict:
-            my_dict[sorted_word].append(word)
-        else:
-            my_dict[sorted_word] = [word]
-
-    return list(my_dict.values())
+    num_map = {}
+    for idx, num in enumerate(nums):
+        complement = target - num
+        if complement in num_map:
+            return [num_map[complement], idx]
+        num_map[num] = idx
+    return []
 
 
-words = ["eat", "tea", "tan", "ate", "nat", "bat"]
-print(group_anagrams(words))
+# my_dict = {2: 0, 6: 1, 7: 2, 8: 3}
+# ==> [my_dict[2] = 0, i = 2]
+
+# [2,6,7,8] target = 9
+# two_nums = [?, ?]
+# two_nums[0] + two_nums[1] = 9
+
+# 9 - 2 = 7
+# 9-6 = 3
+# 9-7 = 2
+# 9-8 = 1
+lst = [2, 6, 7, 8]
+print(two_sum_indices(lst, 9))  # [0, 2] i.e lst[0] + lst[2]
+
+
+print(two_sum_indices([2, 7, 11, 15], 9))  # [0,1]
+print(two_sum_indices([3, 2, 4], 6))  # [0,1, 2]
+print(two_sum_indices([3, 3], 6))  # [0,1 ]
+print(two_sum_indices([1, 2, 3, 4, 5], 10))  # []
+print(two_sum_indices([1, 2, 3, 4, 5], 7))  # [2,3]
+print(two_sum_indices([1, 2, 3, 4, 5], 3))  # [0,1]
+print(two_sum_indices([], 0))  # []

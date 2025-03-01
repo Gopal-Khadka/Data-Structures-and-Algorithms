@@ -542,4 +542,34 @@
 
     return list(my_dict.values())
     ```
+13. Given an array of integers nums and a target integer target, find the indices of two numbers in the array that add up to the target. (**Two Sum**)
+  ```python
+  def two_sum_indices(nums: list[int], target: int):
+    """
+    Find indices of two numbers in a list that sum up to the target value.
+    This function implements the two-sum problem using a hash map approach with O(n) time complexity.
+    Args:
+        nums (list[int]): List of integers to search through
+        target (int): Target sum to find
+    Returns:
+        list[int]: List containing indices of two numbers that sum to target.
+                   Returns empty list if no solution exists.
+    Examples:
+        >>> two_sum_indices([2, 7, 11, 15], 9)
+        [0, 1]
+        >>> two_sum_indices([3, 2, 4], 6)
+        [1, 2]
+        >>> two_sum_indices([3, 3], 6)
+        [0, 1]
+    """
+
+    num_map = {}
+    for idx, num in enumerate(nums):
+        complement = target - num
+        if complement in num_map:
+            return [num_map[complement], idx]
+        num_map[num] = idx
+    return []
+
+  ```
 
