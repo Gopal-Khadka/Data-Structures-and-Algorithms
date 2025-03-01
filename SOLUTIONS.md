@@ -510,9 +510,8 @@
     return None
   ```
 12. You have been given an array of strings, where each string may contain only lowercase English letters. You need to write a function group_anagrams(strings) that groups the anagrams in the array together using a hash table (dictionary). The function should return a list of lists, where each inner list contains a group of anagrams. (**Group Anagrams**)
-
-    ```python
-  def group_anagrams(words: list[str]):
+```python
+    def group_anagrams(words: list[str]):
     """
     Group anagrams from a list of strings.
     This function takes a list of strings and groups anagrams together. Two strings are considered
@@ -541,35 +540,39 @@
             my_dict[sorted_word] = [word]
 
     return list(my_dict.values())
-    ```
-13. Given an array of integers nums and a target integer target, find the indices of two numbers in the array that add up to the target. (**Two Sum**)
-  ```python
-  def two_sum_indices(nums: list[int], target: int):
-    """
-    Find indices of two numbers in a list that sum up to the target value.
-    This function implements the two-sum problem using a hash map approach with O(n) time complexity.
-    Args:
-        nums (list[int]): List of integers to search through
-        target (int): Target sum to find
-    Returns:
-        list[int]: List containing indices of two numbers that sum to target.
-                   Returns empty list if no solution exists.
-    Examples:
-        >>> two_sum_indices([2, 7, 11, 15], 9)
-        [0, 1]
-        >>> two_sum_indices([3, 2, 4], 6)
-        [1, 2]
-        >>> two_sum_indices([3, 3], 6)
-        [0, 1]
-    """
+```
 
-    num_map = {}
-    for idx, num in enumerate(nums):
-        complement = target - num
-        if complement in num_map:
-            return [num_map[complement], idx]
-        num_map[num] = idx
-    return []
+13.  Given an array of integers nums and a target integer target, find the indices of two numbers in the array that add up to the target. (**Two Sum**)
+```python
+def two_sum_indices(nums: list[int], target: int):
+"""
+Find indices of two numbers in a list that sum up to the target value.
+This function implements the two-sum problem using a hash map approach with O(n) time complexity.
+Args:
+   nums (list[int]): List of integers to search through
+   target (int): Target sum to find
+Returns:
+   list[int]: List containing indices of two numbers that sum to target.
+              Returns empty list if no solution exists.
+Examples:
+   >>> two_sum_indices([2, 7, 11, 15], 9)
+   [0, 1]
+   >>> two_sum_indices([3, 2, 4], 6)
+   [1, 2]
+   >>> two_sum_indices([3, 3], 6)
+   [0, 1]
+"""
 
-  ```
+num_map = {}
+for idx, num in enumerate(nums):
+   complement = target - num
+   if complement in num_map:
+       return [num_map[complement], idx]
+   num_map[num] = idx
+return []
+```
 
+14. Given an array of integers nums and a target integer target, write a Python function called subarray_sum that finds the indices of a contiguous subarray in nums that add up to the target sum using a hash table (dictionary).
+```python
+
+```
