@@ -1,31 +1,33 @@
-def first_non_repeating_char(string: str):
-    """Find the first non-repeating character in a string.
-    This function takes a string input and returns the first character that appears exactly
-    once in the string. If no such character exists, returns None.
+def group_anagrams(words: list[str]):
+    """
+    Group anagrams from a list of strings.
+    This function takes a list of strings and groups anagrams together. Two strings are considered
+    anagrams if they contain the same characters with the same frequencies, regardless of order.
     Args:
-        string (str): The input string to search for non-repeating characters
+        words (list[str]): A list of strings to be grouped into anagrams.
     Returns:
-        str or None: The first non-repeating character if one exists, None otherwise
+        list[list[str]]: A list of lists, where each inner list contains strings that are anagrams
+        of each other.
     Example:
-        >>> first_non_repeating_char("abcab")
-        'c'
-        >>> first_non_repeating_char("abcabc")
-        None
-        >>> first_non_repeating_char("aabbcc")
-        None
+        >>> group_anagrams(["eat", "tea", "tan", "ate", "nat", "bat"])
+        [['eat', 'tea', 'ate'], ['tan', 'nat'], ['bat']]
+    Time Complexity:
+        O(n * k * log(k)) where n is the number of words and k is the maximum length of a word
+        due to sorting each word.
+    Space Complexity:
+        O(n) where n is the total number of characters across all words.
     """
 
-    char_counts = {}
-    for letter in string:
-        char_counts[letter] = char_counts.get(letter, 0) + 1
+    my_dict = {}
+    for word in words:
+        sorted_word = "".join(sorted(word))
+        if sorted_word in my_dict:
+            my_dict[sorted_word].append(word)
+        else:
+            my_dict[sorted_word] = [word]
 
-    for char in char_counts:
-        if char_counts[char] == 1:
-            return char
-
-    return None
+    return list(my_dict.values())
 
 
-print(first_non_repeating_char("hheelloo"))  # None
-print(first_non_repeating_char("hello"))  # h
-print(first_non_repeating_char("leetcode"))  # l
+words = ["eat", "tea", "tan", "ate", "nat", "bat"]
+print(group_anagrams(words))
