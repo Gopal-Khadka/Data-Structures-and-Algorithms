@@ -572,7 +572,42 @@ for idx, num in enumerate(nums):
 return []
 ```
 
-14. Given an array of integers nums and a target integer target, write a Python function called subarray_sum that finds the indices of a contiguous subarray in nums that add up to the target sum using a hash table (dictionary).
+14. Given an array of integers nums and a target integer target, write a Python function called subarray_sum that finds the indices of a contiguous subarray in nums that add up to the target sum using a hash table (dictionary).(**Subarray Sum**)
 ```python
+def subarray_sum(nums: list[int], target: int):
+    """
+    Find a contiguous subarray that sums up to the target value.
+    This function uses a cumulative sum approach with a hash map to find a subarray
+    whose elements sum up to the target value. It runs in O(n) time complexity.
+    Args:
+        nums (list[int]): A list of integers to search through
+        target (int): The target sum to find
+    Returns:
+        list[int]: A list containing two indices [i, j] where the subarray nums[i+1:j+1]
+                  sums to the target value. Returns an empty list if no such subarray exists.
+    Example:
+        >>> subarray_sum([1, 2, 3, 4], 6)
+        [0, 2]  # because nums[1:3] = [2, 3] sums to 6
+        >>> subarray_sum([1, 4, 20, 3, 10, 5], 33)
+        [2, 4]  # because nums[3:5] = [3, 10, 20] sums to 33
+        >>> subarray_sum([1, 2, 3], 10)
+        []      # no subarray sums to 10
+    Note:
+        - The function uses a cumulative sum dictionary to track running sums
+        - The key in dict is cumulative_sum and value is the index
+        - Time Complexity: O(n) where n is length of input list
+        - Space Complexity: O(n) for storing the cumulative sums
+    """
 
+    cumulative_sum_dict = {0: -1}
+    cumulative_sum = 0
+
+    for idx, num in enumerate(nums):
+        cumulative_sum += num
+        complement = cumulative_sum - target
+        if complement in cumulative_sum_dict:
+            return [cumulative_sum_dict[complement], idx]
+        cumulative_sum_dict[cumulative_sum] = idx
+
+    return []
 ```
