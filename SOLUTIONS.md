@@ -759,3 +759,50 @@ def longest_consecutive(nums: list[int]) -> int:
         longest_sequence, current_length
     )  # for cases where longest_sequence ends at last.
 ```
+
+19. Write a bubble_sort() method in the LinkedList class that will sort the elements of a linked list in ascending order using the bubble sort algorithm. The method should update the head and tail pointers of the linked list to reflect the new order of the nodes in the list. You can assume that the input linked list will contain only integers. You should not use any additional data structures to sort the linked list. (**Bubble Sort of LL**)
+
+```python
+def bubble_sort(self):
+    """
+    Sorts the linked list using bubble sort algorithm.
+    Time Complexity: O(n^2)
+    Space Complexity: O(1)
+
+    Algorithm:
+    1. If list has less than 2 nodes, return as it's already sorted
+    2. Use two pointers: current and next_node
+    3. Traverse list repeatedly, swapping adjacent values if they're out of order
+    4. Track sorted portion with sorted_until pointer
+    5. Continue until no more swaps are needed
+    6. Update tail pointer to last node
+    """
+
+    # Check if the list has less than 2 elements
+    if self.length < 2:
+    return
+
+    # Initialize the sorted_until pointer to None
+    sorted_until = None  # Initially, last node points to None
+    count = 0
+
+    # Continue sorting until sorted_until reaches the second node
+    # sorted_until starts from previous sorted_until to second node (decrementing in index)
+    while sorted_until != self.head.next:
+    # Initialize current pointer to head of the list
+    current = self.head
+
+    # Iterate through unsorted portion of the list until sorted_until
+    while current.next != sorted_until:
+        next_node = current.next
+
+        # Swap current and next_node values if current is greater
+        if current.value > next_node.value:
+            current.value, next_node.value = next_node.value, current.value
+
+        # Move current pointer to next node
+        current = current.next
+
+    # Update sorted_until pointer to the last node processed
+    sorted_until = current
+```
