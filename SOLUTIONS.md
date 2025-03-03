@@ -673,3 +673,89 @@ def find_pairs_using_set(arr1: list[int], arr2: list[int], target: int):
             pairs.append((num, complement))
     return pairs
 ```
+18. Given an unsorted array of integers, write a function that finds the length of the  longest_consecutive_sequence (i.e., sequence of integers in which each element is one greater than the previous element). (**Set: Longest Consecutive Sequence**)  
+
+**Method 1**  
+
+- First, the function creates a set called num_set that contains all the elements of nums. Creating a set from the array allows the function to check whether an element is in the array in constant time, which optimizes the runtime of the solution.
+
+- The function initializes the variable longest_sequence to zero, which will be updated as the function finds longer sequences.
+
+- Next, the function loops through each number in the nums array. For each number, it checks if the previous number is not in num_set, which means the current number is the start of a new sequence. If the previous number is not in num_set, the function initializes a variable current_num to the current number and a variable current_sequence to 1, since the current number is the first element of a new sequence.
+
+- The function then loops through the remaining elements of the sequence, incrementing the current_num and current_sequence variables for each element that is one more than the previous element. This loop stops when the next element is not in num_set, which means the sequence has ended.
+
+- Once the loop has ended, the function updates the longest_sequence variable to the maximum of its current value and the current_sequence value, since current_sequence represents the length of the sequence that has just been found.
+
+- Finally, the function returns the longest_sequence.
+
+```python
+def longest_consecutive_sequence(nums):
+    # Create a set to keep track of the numbers in the array
+    num_set = set(nums)
+    longest_sequence = 0
+    
+    # Loop through the numbers in the nums array
+    for num in nums:
+        # Check if the current number is the start of a new sequence
+        if num - 1 not in num_set:
+            current_num = num
+            current_sequence = 1
+            
+            # Keep incrementing the current number until the end of the sequence is reached
+            while current_num + 1 in num_set:
+                current_num += 1
+                current_sequence += 1
+            
+            # Update the longest sequence if the current sequence is longer
+            longest_sequence = max(longest_sequence, current_sequence)
+    
+    return longest_sequence
+
+```
+
+**Method 2**
+```python
+def longest_consecutive(nums: list[int]) -> int:
+    """
+    Find the length of the longest consecutive sequence in an unsorted array of integers.
+    This function takes an array of integers and returns the length of the longest
+    consecutive elements sequence. A consecutive sequence is a sequence of integers
+    where each element is exactly one more than the previous element.
+
+
+    Args:
+        nums (list[int]): An unsorted array of integers.
+    Returns:
+        int: Length of the longest consecutive sequence found in the array.
+    Examples:
+        >>> longest_consecutive([100,4,200,1,3,2])
+        4  # The consecutive sequence is [1,2,3,4]
+        >>> longest_consecutive([0,3,7,2,5,8,4,6,0,1])
+        9  # The consecutive sequence is [0,1,2,3,4,5,6,7,8]
+        >>> longest_consecutive([])
+        0  # Empty array returns 0
+    Time Complexity: O(n log n) due to sorting
+    Space Complexity: O(1) as we only use constant extra space
+
+    """
+
+    if not nums:
+        return 0
+    nums.sort()
+
+    longest_sequence = 1  # Track overall longest sequence
+    current_length = 1  # Track current sequence length
+
+    for idx in range(1, len(nums)):
+        if nums[idx] == nums[idx - 1] + 1:  # Found consecutive number
+            current_length += 1
+        elif (
+            nums[idx] != nums[idx - 1]
+        ):  # Sequence break but not duplicates consecutively
+            longest_sequence = max(longest_sequence, current_length)
+            current_length = 1
+    return max(
+        longest_sequence, current_length
+    )  # for cases where longest_sequence ends at last.
+```
