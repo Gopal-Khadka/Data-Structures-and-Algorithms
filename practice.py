@@ -1,198 +1,155 @@
 class Node:
+    # node for BST
     def __init__(self, value):
         self.value = value
-        self.next = None
+        self.left = None
+        self.right = None
 
 
-class LinkedList:
-    def __init__(self, value):
-        """Create new node with given value"""
+class BinarySearchTree:
+    def __init__(self, value=None):
+        if value is not None:
+            new_node = Node(value)
+            self.root = new_node
+        else:
+            self.root = None
+
+    def print_tree(self):
+        """
+        Prints the Binary Search Tree (BST) in a structured format.
+        """
+
+        def _print_tree(node, level=0):
+            if node is not None:
+                _print_tree(node.right, level + 1)
+                print(" " * 4 * level + "->", node.value)
+                _print_tree(node.left, level + 1)
+
+        _print_tree(self.root)
+
+    def insert(self, value):
+        """
+        Inserts a value into the Binary Search Tree (BST).
+        Args:
+            value: The value to be inserted into the BST.
+        Returns:
+            bool: True if the value was successfully inserted, False if the value already exists in the BST.
+        Pseudo Code:
+        1. Create a new node with the given value.
+        2. If the BST is empty (root is None):
+            a. Set the root to the new node.
+            b. Return True.
+        3. Initialize a temporary node (temp) to the root for traversal.
+        4. While True:
+            a. If the value of the new node is equal to the value of the temp node:
+                i. Return False (duplicate value).
+            b. If the value of the new node is less than the value of the temp node:
+                i. If the left child of the temp node is None:
+                    - Set the left child of the temp node to the new node.
+                    - Return True.
+                ii. Otherwise, set temp to the left child of the temp node.
+            c. If the value of the new node is greater than the value of the temp node:
+                i. If the right child of the temp node is None:
+                    - Set the right child of the temp node to the new node.
+                    - Return True.
+                ii. Otherwise, set temp to the right child of the temp node.
+        """
+
         new_node = Node(value)
-        self.head = new_node
-        self.tail = new_node
-        self.length = 1
-
-    def print_list(self):
-        temp = self.head  # assign head as first node
-        values = []
-        while temp is not None:
-            values.append(str(temp.value))
-            temp = temp.next  # assign next value as new node
-        print(", ".join(values))
-
-    def append(self, value):
-        """Add the node with given value to end of the list and return boolean"""
-        new_node = Node(value)
-        if self.head is not None:  # or check if length == 0
-            # for non-empty list to insert next item
-            self.tail.next = new_node
-            self.tail = new_node
-        else:
-            # for empty list to insert first item
-            self.head = new_node
-            self.tail = new_node
-        # self.tail = new_node
-        self.length += 1
-        return True
-
-    def pop(self):
-        """Remove last node and return the node"""
-        # The traversal to find the second-to-last node in pop() is a linear operation.
-        # You may want to consider optimizations like maintaining a pointer to the second-to-last node.
-
-        # check if the list is empty
-        if self.length == 0:
-            return None
-
-        temp = self.head
-        # check if list has only 1 item
-        if self.length == 1:
-            self.head = None
-            self.tail = None
-        else:
-            prev_node = self.head
-            while temp.next is not None:
-                prev_node = temp
-                temp = temp.next
-            self.tail = prev_node  # point tail to second last node
-            self.tail.next = None  # point next of present tail to None
-        self.length -= 1
-        return temp
-
-    def prepend(self, value):
-        """Add the given value node in the beginning of the linked list"""
-        new_node = Node(value)
-        if self.length == 0:
-            self.head = new_node
-            self.tail = new_node
-        else:
-            new_node.next = self.head
-            self.head = new_node
-        self.length += 1
-        return True
-
-    def pop_first(self):
-        """Pop the first node of the list and return the node"""
-        if self.length == 0:
-            return None
-
-        temp = self.head
-        if self.length == 1:
-            self.head = None
-            self.tail = None
-        else:
-            self.head = temp.next
-        temp.next = None
-        self.length -= 1
-        return temp
-
-    def get(self, index):
-        """Returns the value at given index of the linked list"""
-        if index < 0 or index >= self.length:
-            return None
-
-        temp = self.head
-        for _ in range(index):
-            temp = temp.next
-
-        return temp
-
-    def set_value(self, index, value):
-        """Set the given value at the given index node"""
-        temp = self.get(index)
-        if temp:
-            temp.value = value
+        if self.root is None:  # if there is no node in BST
+            self.root = new_node
             return True
+        temp = self.root  # start with root node for traversal
+
+        while True:
+            if (
+                new_node.value == temp.value
+            ):  # check if given value is equal to value of the node i.e duplicate nodes
+                return False
+            if new_node.value < temp.value:  # go left
+                if temp.left is None:  # check if the left spot is already open
+                    temp.left = new_node
+                    return True
+                temp = temp.left  # assign left node as temp if spot not open
+            else:  # go right
+                if temp.right is None:
+                    temp.right = new_node  # check if the right spot is already open
+                    return True
+                temp = temp.right  # assign right node as temp if spot not open
+
+    def contains(self, value):
+        """
+        Check if the tree contains a specific value.
+        Args:
+            value: The value to search for in the tree.
+        Returns:
+            bool: True if the value is found in the tree, False otherwise.
+        Pseudocode:
+        1. Start at the root of the tree.
+        2. While the current node is not None:
+            a. If the current node's value is equal to the target value:
+                i. Return True.
+            b. If the target value is less than the current node's value:
+                i. Move to the left child of the current node.
+            c. If the target value is greater than the current node's value:
+                i. Move to the right child of the current node.
+        3. If the loop ends without finding the value, return False.
+        """
+        # if self.root is None:
+        #     return False
+        temp = self.root
+        while temp is not None:
+            if temp.value == value:
+                return True
+            elif value < temp.value:
+                temp = temp.left
+            else:
+                temp = temp.right
         return False
 
-    def insert(self, index, value):
-        """Insert the value at given index of the list"""
-        if index > self.length or index < 0:
-            return None
+    def dfs_in_order(self):
+        result = []
 
-        if index == 0:
-            return self.prepend(value)
-        if index == self.length:
-            return self.append(value)
+        def traverse(node: Node):
+            if node.left:
+                traverse(node.left)
+            result.append(node.value)
+            if node.right:
+                traverse(node.right)
 
-        new_node = Node(value)
-        temp = self.get(index - 1)  # get previous node i.e. node at (index-1)
-        new_node.next = temp.next
-        temp.next = new_node
+        traverse(self.root)
+        return result
 
-        self.length += 1
+    def is_valid_bst(self):
+        """
+        Checks if the binary tree is a valid Binary Search Tree (BST).
+        A binary tree is a BST if:
+        - All nodes in the left subtree have values less than the node's value
+        - All nodes in the right subtree have values greater than the node's value
+        - Both left and right subtrees are also BSTs
+        Logic:
+        1. Gets inorder traversal of tree which gives sorted array for valid BST
+        2. Checks if array is strictly increasing (each element greater than previous)
+        3. Returns False if any violation found, True if entire array is valid
+        Returns:
+            bool: True if tree is valid BST, False otherwise
+        Time Complexity: O(n) where n is number of nodes
+        Space Complexity: O(n) for storing inorder traversal array
+        """
+
+        sorted_values = self.dfs_in_order()
+        for i in range(1, len(sorted_values)):
+            if sorted_values[i - 1] >= sorted_values[i]:
+                return False
         return True
 
-    def remove(self, index):
-        """ "Remove the node at given index and return boolean"""
-        if index < 0 or index >= self.length:
-            return None
 
-        if index == 0:  # for first node
-            return self.pop_first()
-        if index == self.length - 1:  # for last node
-            return self.pop()
+bst = BinarySearchTree()
+bst.insert(2)
+bst.insert(1)
+bst.insert(4)
+bst.insert(3)
+bst.insert(5)
 
-        prev = self.get(index - 1)
-        temp = prev.next  # get node at given index
-        prev.next = temp.next
-        temp.next = None
-        self.length -= 1
-        return temp
-
-    def bubble_sort(self):
-        """
-        Sorts the linked list using bubble sort algorithm.
-        Time Complexity: O(n^2)
-        Space Complexity: O(1)
-
-        Algorithm:
-        1. If list has less than 2 nodes, return as it's already sorted
-        2. Use two pointers: current and next_node
-        3. Traverse list repeatedly, swapping adjacent values if they're out of order
-        4. Track sorted portion with sorted_until pointer
-        5. Continue until no more swaps are needed
-        6. Update tail pointer to last node
-        """
-
-        # Check if the list has less than 2 elements
-        if self.length < 2:
-            return
-
-        # Initialize the sorted_until pointer to None
-        sorted_until = None  # Initially, last node points to None
-        count = 0
-
-        # Continue sorting until sorted_until reaches the second node
-        # sorted_until starts from previous sorted_until to second node (decrementing in index)
-        while sorted_until != self.head.next:
-            # Initialize current pointer to head of the list
-            current = self.head
-
-            # Iterate through unsorted portion of the list until sorted_until
-            while current.next != sorted_until:
-                next_node = current.next
-
-                # Swap current and next_node values if current is greater
-                if current.value > next_node.value:
-                    current.value, next_node.value = next_node.value, current.value
-
-                # Move current pointer to next node
-                current = current.next
-
-            # Update sorted_until pointer to the last node processed
-            sorted_until = current
-
-
-ll = LinkedList(1)
-ll.append(5)
-ll.append(-3)
-ll.append(25)
-ll.append(10)
-
-print("Before Sorting: ", end="")
-ll.print_list()
-ll.bubble_sort()
-print(ll.tail.value)
-print("After Sorting: ", end="")
-ll.print_list()
+bst.print_tree()
+print(bst.is_valid_bst())

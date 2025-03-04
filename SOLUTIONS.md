@@ -806,3 +806,50 @@ def bubble_sort(self):
     # Update sorted_until pointer to the last node processed
     sorted_until = current
 ```
+
+20.  Write a selection_sort() method in the LinkedList class that will sort the elements of a linked list in ascending order using the selection sort algorithm. (**Selection Sort of LL**)
+
+21. Write an insertion_sort() method in the LinkedList class that will sort the elements of a linked list in ascending order using the insertion sort algorithm. (**Insertion Sort of LL**)
+
+22. Write merge() method that takes in another LinkedList as an input and merges it with the current LinkedList. The elements in both lists are assumed to be in ascending order, but the input lists themselves do not need to be sorted. (**Merge Two Sorted LL**)
+
+23. You are tasked with writing a method called is_valid_bst in the BinarySearchTree class that checks whether a binary search tree is a valid binary search tree. (**Validate BST**)
+```python 
+def dfs_in_order(self):
+        result = []
+
+        def traverse(node: Node):
+            if node.left:
+                traverse(node.left)
+            result.append(node.value)
+            if node.right:
+                traverse(node.right)
+
+        traverse(self.root)
+        return result
+
+    def is_valid_bst(self):
+        """
+        Checks if the binary tree is a valid Binary Search Tree (BST).
+        A binary tree is a BST if:
+        - All nodes in the left subtree have values less than the node's value
+        - All nodes in the right subtree have values greater than the node's value 
+        - Both left and right subtrees are also BSTs
+        Logic:
+        1. Gets inorder traversal of tree which gives sorted array for valid BST
+        2. Checks if array is strictly increasing (each element greater than previous)
+        3. Returns False if any violation found, True if entire array is valid
+        Returns:
+            bool: True if tree is valid BST, False otherwise
+        Time Complexity: O(n) where n is number of nodes
+        Space Complexity: O(n) for storing inorder traversal array
+        """
+
+        sorted_values = self.dfs_in_order()
+        for i in range(1, len(sorted_values)):
+            if sorted_values[i - 1] >= sorted_values[i]:
+                return False
+        return True
+```
+
+
