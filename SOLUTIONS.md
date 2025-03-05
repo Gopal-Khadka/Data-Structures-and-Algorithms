@@ -852,4 +852,8 @@ def dfs_in_order(self):
         return True
 ```
 
+24. Given a binary search tree, find the kth smallest element in the tree. For example, if the tree contains the elements [1, 2, 3, 4, 5], the 3rd smallest element would be 3. (**BST: Kth Smallest Node**)
 
+```python
+
+```

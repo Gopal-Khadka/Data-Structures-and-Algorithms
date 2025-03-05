@@ -1,155 +1,63 @@
-class Node:
-    # node for BST
-    def __init__(self, value):
-        self.value = value
-        self.left = None
-        self.right = None
+from typing import List
 
 
-class BinarySearchTree:
-    def __init__(self, value=None):
-        if value is not None:
-            new_node = Node(value)
-            self.root = new_node
-        else:
-            self.root = None
-
-    def print_tree(self):
+class Solution:
+    def isAlienSorted(self, words: List[str], order: str) -> bool:
         """
-        Prints the Binary Search Tree (BST) in a structured format.
-        """
-
-        def _print_tree(node, level=0):
-            if node is not None:
-                _print_tree(node.right, level + 1)
-                print(" " * 4 * level + "->", node.value)
-                _print_tree(node.left, level + 1)
-
-        _print_tree(self.root)
-
-    def insert(self, value):
-        """
-        Inserts a value into the Binary Search Tree (BST).
+        Check if array of strings is sorted according to alien dictionary order.
+        Algorithm:
+        1. Create a dictionary mapping each character in alien order to its index position
+        2. Compare adjacent words pairwise
+        3. For each pair of words:
+            - Compare characters at same positions until either word ends
+            - If first word character has lower alien order - move to next word pair
+            - If first word character has higher alien order - array is not sorted
+            - If matching characters but first word longer - array is not sorted
+        4. Return True if all pairs are sorted according to alien order
         Args:
-            value: The value to be inserted into the BST.
+             words (List[str]): List of words to check if sorted
+             order (str): String defining the alien alphabet ordering
         Returns:
-            bool: True if the value was successfully inserted, False if the value already exists in the BST.
-        Pseudo Code:
-        1. Create a new node with the given value.
-        2. If the BST is empty (root is None):
-            a. Set the root to the new node.
-            b. Return True.
-        3. Initialize a temporary node (temp) to the root for traversal.
-        4. While True:
-            a. If the value of the new node is equal to the value of the temp node:
-                i. Return False (duplicate value).
-            b. If the value of the new node is less than the value of the temp node:
-                i. If the left child of the temp node is None:
-                    - Set the left child of the temp node to the new node.
-                    - Return True.
-                ii. Otherwise, set temp to the left child of the temp node.
-            c. If the value of the new node is greater than the value of the temp node:
-                i. If the right child of the temp node is None:
-                    - Set the right child of the temp node to the new node.
-                    - Return True.
-                ii. Otherwise, set temp to the right child of the temp node.
+             bool: True if words are sorted according to alien dictionary, False otherwise
+        Time Complexity: O(M) where M is total characters in all words
+        Space Complexity: O(1) as order length is fixed at 26 characters
+        Example:
+             >>> isAlienSorted(["hello","leetcode"], "hlabcdefgijkmnopqrstuvwxyz")
+             True
+             >>> isAlienSorted(["word","world","row"], "worldabcefghijkmnpqstuvxyz")
+             False
         """
 
-        new_node = Node(value)
-        if self.root is None:  # if there is no node in BST
-            self.root = new_node
-            return True
-        temp = self.root  # start with root node for traversal
+        alien_order = {char: idx for idx, char in enumerate(order)}
 
-        while True:
-            if (
-                new_node.value == temp.value
-            ):  # check if given value is equal to value of the node i.e duplicate nodes
-                return False
-            if new_node.value < temp.value:  # go left
-                if temp.left is None:  # check if the left spot is already open
-                    temp.left = new_node
-                    return True
-                temp = temp.left  # assign left node as temp if spot not open
-            else:  # go right
-                if temp.right is None:
-                    temp.right = new_node  # check if the right spot is already open
-                    return True
-                temp = temp.right  # assign right node as temp if spot not open
-
-    def contains(self, value):
-        """
-        Check if the tree contains a specific value.
-        Args:
-            value: The value to search for in the tree.
-        Returns:
-            bool: True if the value is found in the tree, False otherwise.
-        Pseudocode:
-        1. Start at the root of the tree.
-        2. While the current node is not None:
-            a. If the current node's value is equal to the target value:
-                i. Return True.
-            b. If the target value is less than the current node's value:
-                i. Move to the left child of the current node.
-            c. If the target value is greater than the current node's value:
-                i. Move to the right child of the current node.
-        3. If the loop ends without finding the value, return False.
-        """
-        # if self.root is None:
-        #     return False
-        temp = self.root
-        while temp is not None:
-            if temp.value == value:
-                return True
-            elif value < temp.value:
-                temp = temp.left
-            else:
-                temp = temp.right
-        return False
-
-    def dfs_in_order(self):
-        result = []
-
-        def traverse(node: Node):
-            if node.left:
-                traverse(node.left)
-            result.append(node.value)
-            if node.right:
-                traverse(node.right)
-
-        traverse(self.root)
-        return result
-
-    def is_valid_bst(self):
-        """
-        Checks if the binary tree is a valid Binary Search Tree (BST).
-        A binary tree is a BST if:
-        - All nodes in the left subtree have values less than the node's value
-        - All nodes in the right subtree have values greater than the node's value
-        - Both left and right subtrees are also BSTs
-        Logic:
-        1. Gets inorder traversal of tree which gives sorted array for valid BST
-        2. Checks if array is strictly increasing (each element greater than previous)
-        3. Returns False if any violation found, True if entire array is valid
-        Returns:
-            bool: True if tree is valid BST, False otherwise
-        Time Complexity: O(n) where n is number of nodes
-        Space Complexity: O(n) for storing inorder traversal array
-        """
-
-        sorted_values = self.dfs_in_order()
-        for i in range(1, len(sorted_values)):
-            if sorted_values[i - 1] >= sorted_values[i]:
+        for i in range(len(words) - 1):  # Loop from 2nd to last element
+            word1, word2 = words[i], words[i + 1]
+            for j in range(min(len(word1), len(word2))):
+                # loop in range of minimum length betn both words
+                # useful for words with same prefix i.e [app, apple,...]
+                if alien_order[word1[j]] < alien_order[word2[j]]:
+                    # if first word char has lower alien order, move to next char
+                    break
+                elif alien_order[word1[j]] > alien_order[word2[j]]:
+                    # # if first word char has higher alien order, it is not sorted lexographically
+                    return False
+            # If word1 is a prefix of word2 but word1 is longer, it's invalid
+            if len(word1) > len(word2) and word1[: len(word2)] == word2:
+                # if both words have same prefix but prev word is longer
+                # that means it is not sorted lexographically
+                # for eg: ["word","world","row"] (here, "wor" is same.)
                 return False
         return True
 
 
-bst = BinarySearchTree()
-bst.insert(2)
-bst.insert(1)
-bst.insert(4)
-bst.insert(3)
-bst.insert(5)
+sol = Solution()
+words = ["hello", "leetcode"]
+order = "hlabcdefgijkmnopqrstuvwxyz"
+result = sol.isAlienSorted(words, order)
+print(result)
 
-bst.print_tree()
-print(bst.is_valid_bst())
+
+words = ["kuvp", "q"]
+order = "ngxlkthsjuoqcpavbfdermiywz"
+result = sol.isAlienSorted(words, order)
+print(result)
